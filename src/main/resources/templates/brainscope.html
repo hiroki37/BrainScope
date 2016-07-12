@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>BrainScope</title>
+	<link rel="stylesheet" href="default.css" />
+</head>
+
+<body>
+	<p class="title">BrainScope</p>
+
+	<p>
+		<table class="width-100per height-100per border">
+			<tr>
+				<td class="width-50per height-100per border border-color" rowspan="2">
+					<!-- スコープアドレスの移動（上り） -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="move_up_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="１つ上のニューロンへ"><img class="size-30" src="arrow_left.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(0).id}"></textarea>
+					</form>
+					<!-- ニューロンの生成 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="generate_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="子ニューロンの生成"><img class="size-30" src="plus.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(0).id}"></textarea>
+					</form>
+					<!-- ニューロンの更新 -->
+					<form method="get" action="brainscope">
+						<input type="hidden" name="update_flag" value="1" />
+						<table class="width-100per height-100per">
+							<tr>
+								<td>
+									<input class="icon" type="submit" value="保存" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<textarea class="size-10 display" name="id" th:text="${brainscope.get(0).id}"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>タイトル：<br />
+									<textarea class="textarea" name="title" th:text="${brainscope.get(0).title}">親ニューロン</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									コンテンツ：<br />
+									<textarea class="textarea" name="content" style="height: 370px;" th:text="${brainscope.get(0).content}"></textarea>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</td>
+				<td class="width-50per height-50per border">
+					<!-- スコープアドレスの移動（下り） -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="move_down_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(1).id}"></textarea>
+					</form>
+					<!-- ニューロンの削除 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="delete_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(1).id}"></textarea>
+					</form>
+					<!-- ニューロンの挿入 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="insert_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(1).id}"></textarea>
+					</form>
+					<!-- ニューロンの更新 -->
+					<form method="get" action="brainscope">
+						<input type="hidden" name="update_flag" value="1" />
+						<table class="width-100per height-100per">
+							<tr>
+								<td>
+									<input class="icon" type="submit" value="保存" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<textarea class="size-10 display" name="id" th:text="${brainscope.get(1).id}"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									タイトル：<br />
+									<textarea class="textarea" name="title" th:text="${brainscope.get(1).title}">子ニューロン１</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									コンテンツ：<br />
+									<textarea class="textarea" name="content" style="height: 80px;" th:text="${brainscope.get(1).content}"></textarea>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td class="width-50per height-50per border">
+					<!-- スコープアドレスの移動（下り） -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="move_down_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(2).id}"></textarea>
+					</form>
+					<!-- ニューロンの削除 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="delete_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(2).id}"></textarea>
+					</form>
+					<!-- ニューロンの挿入 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="insert_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
+						<textarea class="display" name="id" th:text="${brainscope.get(2).id}"></textarea>
+					</form>
+					<!-- ニューロンの更新 -->
+					<form method="get" action="brainscope">
+						<input type="hidden" name="update_flag" value="1" />
+						<table class="width-100per height-100per">
+							<tr>
+								<td>
+									<input class="icon" type="submit" value="保存" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<textarea class="size-10 display" name="id" th:text="${brainscope.get(2).id}"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									タイトル：<br />
+									<textarea class="textarea" name="title" th:text="${brainscope.get(2).title}">子ニューロン２</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									コンテンツ：<br />
+									<textarea class="textarea" name="content" style="height: 80px;" th:text="${brainscope.get(2).content}"></textarea>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</td>
+			</tr>
+		</table>
+	</p>
+</body>
+</html>

@@ -1,0 +1,96 @@
+/*テキスト*/
+.title {
+	color: #0000ff;
+	font-size: 150%;
+	font-weight: bold;
+}
+
+/*サイズ*/
+.size-30{
+	width: 50px;
+	height: 50px;
+	position: relative;
+	top: -3px;
+	left: -8px;
+}
+
+.size-50 {
+	width: 50px;
+	height: 50px;
+	position: relative;
+}
+
+.size-100 {
+	width: 100px;
+	height: 100px;
+	position: relative;
+}
+
+.icon {
+	width: 50px;
+	height: 50px;
+	position: relative;
+}
+
+.width-50per {
+	width: 50%;
+}
+
+.width-100per {
+	width: 100%;
+}
+
+.height-50per {
+	height: 100%;
+}
+
+.height-100per {
+	height: 100%;
+}
+
+.size-box {
+	width: 100px;
+	height: 50px;
+	position: relative;
+}
+
+/*余白*/
+.top-minus20 {
+	top: -20px;
+}
+
+.top-minus50 {
+	top: -50px;
+}
+
+.left-plus50 {
+	left: 50px;
+}
+
+/*テーブル*/
+.border {
+	border: solid 2px;
+}
+
+.border-color {
+	border-color: blue;
+}
+
+/*テキストエリア*/
+.textarea {
+	width: 99%;
+	resize: none;
+}
+
+.display {
+	display: none;
+}
+
+.inline {
+	display: inline;
+}
+
+/*カーソル*/
+.cursor {
+	cursor: pointer;
+}
