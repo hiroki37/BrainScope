@@ -37,3 +37,6 @@ public class ConfigDao {
 		return scope_address;
 	}
 }
+
+// 定時コミット用テスト
+// 編集していないファイルのコミットの挙動について
