@@ -90,6 +90,10 @@
 	display: inline;
 }
 
+.float {
+	float: left;
+}
+
 /*ƒJ[ƒ\ƒ‹*/
 .cursor {
 	cursor: pointer;

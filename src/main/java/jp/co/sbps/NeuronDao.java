@@ -1,6 +1,5 @@
 package jp.co.sbps;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,45 +30,8 @@ public class NeuronDao {
 				configDao.scope_address(), neuron_level(configDao.scope_address()),
 				left_edge(configDao.scope_address()), right_edge(configDao.scope_address()));
 
-		@SuppressWarnings("serial")
-		final Map<String, Object> nullMap = new HashMap<String, Object>() {
-			{
-				put("id", "");
-				put("title", "");
-				put("content", "");
-				put("neuron_level", "");
-				put("left_edge", "");
-				put("right_edge", "");
-				put("create_date", "");
-				put("update_date", "");
-			}
-		};
-
-		while (neurons.size() < 3) {
-			neurons.add(nullMap);
-		}
-
 		return neurons;
 	}
-	
-	// スコープアドレスのニューロンを返す
-	/*public List<Map<String,Object>> sample1() {
-		List<Map<String,Object>> sample1;
-		
-		sample1 = jdbc.queryForList("SELECT * FROM neuron WHERE id = ?",configDao.scope_address());
-		
-		return sample1;
-	}
-	
-	// スコープアドレスのニューロンの子供をすべて返す
-	public List<Map<String,Object>> sample2() {
-		List<Map<String,Object>> sample2;
-		
-		sample2 = jdbc.queryForList("SELECT * FROM neuron WHERE left_edge BETWEEN ? AND ? AND neuron_level = ? + 1",
-				left_edge(configDao.scope_address()), right_edge(configDao.scope_address()), neuron_level(configDao.scope_address()));
-		
-		return sample2;
-	}*/
 
 	// ニューロンの更新
 	public void update(Integer id, String title, String content) {

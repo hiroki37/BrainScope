@@ -11,9 +11,9 @@
 	<p class="title">BrainScope</p>
 
 	<p>
-		<table class="width-100per height-100per border">
+		<table border="1" class="float">
 			<tr>
-				<td class="width-50per height-100per border border-color" rowspan="2">
+				<td class="width-50per border border-color" rowspan="2">
 					<!-- スコープアドレスの移動（上り） -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="move_up_flag" value="1" />
@@ -54,128 +54,61 @@
 						</table>
 					</form>
 				</td>
-				<td class="width-50per height-50per border">
-					<!-- スコープアドレスの移動（下り） -->
-					<form class="inline" method="get" action="brainscope">
-						<input type="hidden" name="move_down_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
-						<textarea class="display" name="id" th:text="${brainscope.get(1).id}"></textarea>
-					</form>
-					<!-- ニューロンの削除 -->
-					<form class="inline" method="get" action="brainscope">
-						<input type="hidden" name="delete_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
-						<textarea class="display" name="id" th:text="${brainscope.get(1).id}"></textarea>
-					</form>
-					<!-- ニューロンの挿入 -->
-					<form class="inline" method="get" action="brainscope">
-						<input type="hidden" name="insert_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
-						<textarea class="display" name="id" th:text="${brainscope.get(1).id}"></textarea>
-					</form>
-					<!-- ニューロンの更新 -->
-					<form method="get" action="brainscope">
-						<input type="hidden" name="update_flag" value="1" />
-						<table class="width-100per height-100per">
-							<tr>
-								<td>
-									<input class="icon" type="submit" value="保存" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<textarea class="size-10 display" name="id" th:text="${brainscope.get(1).id}"></textarea>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									タイトル：<br />
-									<textarea class="textarea" name="title" th:text="${brainscope.get(1).title}">子ニューロン１</textarea>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									コンテンツ：<br />
-									<textarea class="textarea" name="content" style="height: 80px;" th:text="${brainscope.get(1).content}"></textarea>
-								</td>
-							</tr>
-						</table>
-					</form>
-				</td>
-			</tr>
-			<tr>
-				<td class="width-50per height-50per border">
-					<!-- スコープアドレスの移動（下り） -->
-					<form class="inline" method="get" action="brainscope">
-						<input type="hidden" name="move_down_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
-						<textarea class="display" name="id" th:text="${brainscope.get(2).id}"></textarea>
-					</form>
-					<!-- ニューロンの削除 -->
-					<form class="inline" method="get" action="brainscope">
-						<input type="hidden" name="delete_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
-						<textarea class="display" name="id" th:text="${brainscope.get(2).id}"></textarea>
-					</form>
-					<!-- ニューロンの挿入 -->
-					<form class="inline" method="get" action="brainscope">
-						<input type="hidden" name="insert_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
-						<textarea class="display" name="id" th:text="${brainscope.get(2).id}"></textarea>
-					</form>
-					<!-- ニューロンの更新 -->
-					<form method="get" action="brainscope">
-						<input type="hidden" name="update_flag" value="1" />
-						<table class="width-100per height-100per">
-							<tr>
-								<td>
-									<input class="icon" type="submit" value="保存" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<textarea class="size-10 display" name="id" th:text="${brainscope.get(2).id}"></textarea>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									タイトル：<br />
-									<textarea class="textarea" name="title" th:text="${brainscope.get(2).title}">子ニューロン２</textarea>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									コンテンツ：<br />
-									<textarea class="textarea" name="content" style="height: 80px;" th:text="${brainscope.get(2).content}"></textarea>
-								</td>
-							</tr>
-						</table>
-					</form>
-				</td>
 			</tr>
 		</table>
 		
-		<table style="float: left" border="1">
-			<tr><td><textarea th:text="${brainscope.get(0).title}"></textarea></td></tr>
+		<table border="1">
+			<tr th:each="bs, iterStat : ${brainscope}" th:class="${iterStat.first} ? 'display'">
+				<td class="width-50per border">
+					<!-- スコープアドレスの移動（下り） -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="move_down_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
+						<textarea class="display" name="id" th:text="${bs.id}"></textarea>
+					</form>
+					<!-- ニューロンの削除 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="delete_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
+						<textarea class="display" name="id" th:text="${bs.id}"></textarea>
+					</form>
+					<!-- ニューロンの挿入 -->
+					<form class="inline" method="get" action="brainscope">
+						<input type="hidden" name="insert_flag" value="1" />
+						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
+						<textarea class="display" name="id" th:text="${bs.id}"></textarea>
+					</form>
+					<!-- ニューロンの更新 -->
+					<form method="get" action="brainscope">
+						<input type="hidden" name="update_flag" value="1" />
+						<table class="width-100per height-100per">
+							<tr>
+								<td>
+									<input class="icon" type="submit" value="保存" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<textarea class="size-10 display" name="id" th:text="${bs.id}"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									タイトル：<br />
+									<textarea class="textarea" name="title" th:text="${bs.title}">子ニューロン２</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									コンテンツ：<br />
+									<textarea class="textarea" name="content" style="height: 80px;" th:text="${bs.content}"></textarea>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</td>
+			</tr>
 		</table>
-		<table border="1" id="info"></table>
 	</p>
-	
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-			
-			//var title = /*[[${brainscope.get(0).title}]]*/ 'タイトルやで！';
-		
-			for(var i=1; i<=/*[[${brainscope.size()-1}]]*/5; i++) {
-				var table = document.getElementById('info');
-				var row = table.insertRow(-1);
-				var cell = row.insertCell(-1);
-				var textarea = '<textarea></textarea>';
-				var row_len = table.rows.length;
-				cell.innerHTML = textarea;
-			}
-			
-		/*]]>*/
-	</script>
 </body>
 </html>
