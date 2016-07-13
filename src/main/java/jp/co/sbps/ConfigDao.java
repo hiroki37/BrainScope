@@ -18,25 +18,22 @@ public class ConfigDao {
 	private JdbcTemplate jdbc;
 
 	// スコープアドレスの移動（上り）
-	public void move_up(String id) {
+	public void move_up(Integer id) {
 		
 		jdbc.update("UPDATE config SET scope_address = (SELECT id FROM neuron WHERE left_edge = ?)",
 				neuronDao.parent_left_edge(id));
 	}
 
 	// スコープアドレスの移動（下り）
-	public void move_down(String id) {
+	public void move_down(Integer id) {
 		jdbc.update("UPDATE config SET scope_address = ?", id);
 	}
 
 	// ＝＝＝＝＝SQLパーツ＝＝＝＝＝
 
 	//現在のスコープアドレス
-	public String scope_address() {
-		String scope_address = jdbc.queryForObject("SELECT scope_address FROM config", String.class);
+	public Integer scope_address() {
+		Integer scope_address = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 		return scope_address;
 	}
 }
-
-// 定時コミット用テスト
-// 編集していないファイルのコミットの挙動について

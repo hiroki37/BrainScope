@@ -15,16 +15,16 @@ public class MainController {
 	ConfigDao configDao;
 	
 	@RequestMapping("brainscope")
-	public String brainscope(String id, String title, String content, String move_up_flag, String move_down_flag,
+	public String brainscope(Integer id, String title, String content, String move_up_flag, String move_down_flag,
 			String update_flag, String generate_flag, String delete_flag, String insert_flag, Model model) {
 
 		// スコープアドレスの移動（上り）
-		if (id != null && id != "" && Integer.parseInt(neuronDao.neuron_level(id)) - 1 > 0 && move_up_flag != null) {
+		if (id != null && neuronDao.neuron_level(id) - 1 > 0 && move_up_flag != null) {
 			configDao.move_up(id);
 		}
 
 		// スコープアドレスの移動（下り）
-		if (id != "" && move_down_flag != null) {
+		if (id != null && move_down_flag != null) {
 			configDao.move_down(id);
 		}
 
@@ -34,21 +34,21 @@ public class MainController {
 		}
 
 		// ニューロンの削除
-		if (id != "" && delete_flag != null) {
+		if (id != null && delete_flag != null) {
 			neuronDao.delete(id);
 		}
 
 		// ニューロンの更新
-		if (id != "" && update_flag != null) {
+		if (id != null && update_flag != null) {
 			neuronDao.update(id, title, content);
 		}
 
 		// ニューロンの挿入
-		if (id != "" && insert_flag != null) {
+		if (id != null && insert_flag != null) {
 			neuronDao.insert(id);
 		}
 
-		// 木構造を返す
+		// 木構造をモデルに代入		
 		model.addAttribute("brainscope", neuronDao.display());
 
 		return "brainscope";

@@ -1,2 +1,0 @@
-INSERT INTO NEURON (title, content, neuron_level, left_edge, right_edge, create_date, update_date) VALUES ('ニューロン１', '初期ニューロン', 1, 1, 1024, current_timestamp, current_timestamp);
-INSERT INTO CONFIG VALUES (1, 2);
