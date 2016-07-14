@@ -19,7 +19,6 @@ public class ConfigDao {
 
 	// スコープアドレスの移動（上り）
 	public void move_up(Integer id) {
-		
 		jdbc.update("UPDATE config SET scope_address = (SELECT id FROM neuron WHERE left_edge = ?)",
 				neuronDao.parent_left_edge(id));
 	}
@@ -32,8 +31,7 @@ public class ConfigDao {
 	// ＝＝＝＝＝SQLパーツ＝＝＝＝＝
 
 	//現在のスコープアドレス
-	public Integer scope_address() {
-		Integer scope_address = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
-		return scope_address;
+	public Integer scope_address() { 
+		return jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 	}
 }

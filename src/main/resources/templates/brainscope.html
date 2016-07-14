@@ -29,10 +29,10 @@
 					<!-- ニューロンの更新 -->
 					<form method="get" action="brainscope">
 						<input type="hidden" name="update_flag" value="1" />
-						<table class="width-100per height-100per">
+						<table class="width-100per">
 							<tr>
 								<td>
-									<input class="icon" type="submit" value="保存" />
+									<input class="size-50" type="submit" value="保存" />
 								</td>
 							</tr>
 							<tr>
@@ -58,50 +58,50 @@
 		</table>
 		
 		<table border="1">
-			<tr th:each="bs, iterStat : ${brainscope}" th:class="${iterStat.first} ? 'display'">
+			<tr th:each="brainscope, iterStat : ${brainscope}" th:class="${iterStat.first} ? 'display'">
 				<td class="width-50per border">
 					<!-- スコープアドレスの移動（下り） -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="move_down_flag" value="1" />
 						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
-						<textarea class="display" name="id" th:text="${bs.id}"></textarea>
+						<textarea class="display" name="id" th:text="${brainscope.id}"></textarea>
 					</form>
 					<!-- ニューロンの削除 -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="delete_flag" value="1" />
 						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
-						<textarea class="display" name="id" th:text="${bs.id}"></textarea>
+						<textarea class="display" name="id" th:text="${brainscope.id}"></textarea>
 					</form>
 					<!-- ニューロンの挿入 -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="insert_flag" value="1" />
 						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
-						<textarea class="display" name="id" th:text="${bs.id}"></textarea>
+						<textarea class="display" name="id" th:text="${brainscope.id}"></textarea>
 					</form>
 					<!-- ニューロンの更新 -->
 					<form method="get" action="brainscope">
 						<input type="hidden" name="update_flag" value="1" />
-						<table class="width-100per height-100per">
+						<table class="width-100per">
 							<tr>
 								<td>
-									<input class="icon" type="submit" value="保存" />
+									<input class="size-50" type="submit" value="保存" />
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<textarea class="size-10 display" name="id" th:text="${bs.id}"></textarea>
+									<textarea class="size-10 display" name="id" th:text="${brainscope.id}"></textarea>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									タイトル：<br />
-									<textarea class="textarea" name="title" th:text="${bs.title}">子ニューロン２</textarea>
+									<textarea class="textarea" name="title" th:text="${brainscope.title}">子ニューロン２</textarea>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									コンテンツ：<br />
-									<textarea class="textarea" name="content" style="height: 80px;" th:text="${bs.content}"></textarea>
+									<textarea class="textarea" name="content" style="height: 80px;" th:text="${brainscope.content}"></textarea>
 								</td>
 							</tr>
 						</table>
