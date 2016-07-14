@@ -8,5 +8,3 @@ INSERT INTO NEURON (title, content, neuron_level, left_edge, right_edge, create_
 
 
 INSERT INTO CONFIG VALUES (1, 2);
-
-// 

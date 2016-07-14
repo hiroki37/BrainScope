@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>BrainScope</title>
-	<link rel="stylesheet" href="default.css" />
+	<link rel="stylesheet" href="./css/default.css" />
 </head>
 
 <body>
@@ -17,13 +17,13 @@
 					<!-- スコープアドレスの移動（上り） -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="move_up_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="１つ上のニューロンへ"><img class="size-30" src="arrow_left.png" /></button>
+						<button class="size-50 cursor" type="submit" title="１つ上のニューロンへ"><img class="size-50 adjust" src="arrow_left.png" /></button>
 						<textarea class="display" name="id" th:text="${brainscope.get(0).id}"></textarea>
 					</form>
 					<!-- ニューロンの生成 -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="generate_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="子ニューロンの生成"><img class="size-30" src="plus.png" /></button>
+						<button class="size-50 cursor" type="submit" title="子ニューロンの生成"><img class="size-50 adjust" src="plus.png" /></button>
 						<textarea class="display" name="id" th:text="${brainscope.get(0).id}"></textarea>
 					</form>
 					<!-- ニューロンの更新 -->
@@ -41,14 +41,15 @@
 								</td>
 							</tr>
 							<tr>
-								<td>タイトル：<br />
-									<textarea class="textarea" name="title" th:text="${brainscope.get(0).title}">親ニューロン</textarea>
+								<td>
+									<!-- タイトル -->
+									<textarea class="textarea" name="title" rows="1" th:text="${brainscope.get(0).title}">親ニューロン</textarea>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									コンテンツ：<br />
-									<textarea class="textarea" name="content" style="height: 370px;" th:text="${brainscope.get(0).content}"></textarea>
+									<!-- コンテンツ -->
+									<textarea class="textarea parent_height" name="content" th:text="${brainscope.get(0).content}"></textarea>
 								</td>
 							</tr>
 						</table>
@@ -63,19 +64,19 @@
 					<!-- スコープアドレスの移動（下り） -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="move_down_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-30" src="arrow_right.png" /></button>
+						<button class="size-50 cursor" type="submit" title="このニューロンに移動"><img class="size-50 adjust" src="arrow_right.png" /></button>
 						<textarea class="display" name="id" th:text="${brainscope.id}"></textarea>
 					</form>
 					<!-- ニューロンの削除 -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="delete_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-30" src="delete.png" /></button>
+						<button class="size-50 cursor" type="submit" title="このニューロンを削除"><img class="size-50 adjust" src="delete.png" /></button>
 						<textarea class="display" name="id" th:text="${brainscope.id}"></textarea>
 					</form>
 					<!-- ニューロンの挿入 -->
 					<form class="inline" method="get" action="brainscope">
 						<input type="hidden" name="insert_flag" value="1" />
-						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-30" src="insert.png" /></button>
+						<button class="size-50 cursor" type="submit" title="ニューロンを挿入"><img class="size-50 adjust" src="insert.png" /></button>
 						<textarea class="display" name="id" th:text="${brainscope.id}"></textarea>
 					</form>
 					<!-- ニューロンの更新 -->
@@ -94,14 +95,14 @@
 							</tr>
 							<tr>
 								<td>
-									タイトル：<br />
-									<textarea class="textarea" name="title" th:text="${brainscope.title}">子ニューロン２</textarea>
+									<!-- タイトル -->
+									<textarea class="textarea" name="title" rows="1" th:text="${brainscope.title}">子ニューロン２</textarea>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									コンテンツ：<br />
-									<textarea class="textarea" name="content" style="height: 80px;" th:text="${brainscope.content}"></textarea>
+									<!-- コンテンツ -->
+									<textarea class="textarea child_height" name="content" th:text="${brainscope.content}"></textarea>
 								</td>
 							</tr>
 						</table>
