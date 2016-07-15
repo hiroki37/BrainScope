@@ -101,7 +101,7 @@ public class NeuronDao {
 	
 	// 挿入する際の、左端座標
 	public Float insertLeft(Integer id) {
-		Float maxRightEdge = jdbc.queryForObject("SELECT GREATEST(?, ?)",
+		Float maxRightEdge = jdbc.queryForObject("SELECT GREATEST(COALESCE(?, 0), COALESCE(?, 0))",
 				Float.class, maxRightEdge(leftEdge(id)), parentLeftEdge(id));
 		
 		return maxRightEdge + (leftEdge(id) - maxRightEdge) / 2;
@@ -109,7 +109,7 @@ public class NeuronDao {
 	
 	// 挿入する際の、右端座標
 	public Float insertRight(Integer id) {
-		Float maxLeftEdge = jdbc.queryForObject("SELECT LEAST(?, ?)",
+		Float maxLeftEdge = jdbc.queryForObject("SELECT LEAST(COALESCE(?, 1025), COALESCE(?, 1025))",
 				Float.class, minLeftEdge(rightEdge(id)), parentRightEdge(id));
 		
 		return rightEdge(id) + (maxLeftEdge - rightEdge(id)) / 2;
@@ -142,7 +142,7 @@ public class NeuronDao {
 
 	// ２つの値の最大値
 	public Float greatest(Float var1, Float var2) {
-		return jdbc.queryForObject("SELECT GREATEST(?, ?)", Float.class, var1, var2);
+		return jdbc.queryForObject("SELECT GREATEST(COALESCE(?, 0), COALESCE(?, 0))", Float.class, var1, var2);
 	}
 
 	// 右端座標以上で最少の左端座標
