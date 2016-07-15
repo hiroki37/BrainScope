@@ -144,7 +144,7 @@ public class NeuronDao {
 	public Float greatest(Float var1, Float var2) {
 		return jdbc.queryForObject("SELECT GREATEST(?, ?)", Float.class, var1, var2);
 	}
-	
+
 	// right_edge以上で最少のleft_edge
 	public Float min_left_edge(Float right_edge) {
 		return jdbc.queryForObject("SELECT MIN(left_edge) FROM neuron WHERE left_edge > ?", Float.class, right_edge);
