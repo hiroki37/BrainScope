@@ -1,10 +1,7 @@
 package jp.co.sbps;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,16 +27,13 @@ public class NeuronDaoTest {
 	@Autowired
 	private JdbcTemplate jdbc;
 	
-	Date date = new Date();
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	
 	@Before
 	public void setup() {
 		// neuronテーブルの初期化
 		jdbc.update("DELETE FROM neuron");
 		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 200, 800, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 2, 900, 1000, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 201, 624, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 2, 824, 1000, '2016-04-01', '2016-04-01')");
 		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 3, 300, 400, '2016-04-01', '2016-04-01')");
 		jdbc.update("INSERT INTO neuron VALUES (5, 'ニューロン５', 'コンテンツ５', 3, 500, 600, '2016-04-01', '2016-04-01')");
 		
@@ -51,16 +45,15 @@ public class NeuronDaoTest {
 	@Test
 	public void display_現在のスコープアドレスのニューロンとそれより１つ深いニューロンのすべてを返すことを確認する() {
 		// SetUp
-		Integer scopeAddress = 1;
-		jdbc.update("UPDATE config SET scope_address=" + scopeAddress);
+		String expected = "[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, left_edge=1.0, right_edge=1024.0, create_date=2016-04-01, update_date=2016-04-01}, "
+				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, left_edge=201.0, right_edge=624.0, create_date=2016-04-01, update_date=2016-04-01}, "
+				+ "{id=3, title=ニューロン３, content=コンテンツ３, neuron_level=2, left_edge=824.0, right_edge=1000.0, create_date=2016-04-01, update_date=2016-04-01}]";
 		
 		// Exercise
 		String actual = String.valueOf(neuronDao.display());
 		
 		// Verify
-		assertThat(actual, is("[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, left_edge=1.0, right_edge=1024.0, create_date=2016-04-01, update_date=2016-04-01}, "
-				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, left_edge=200.0, right_edge=800.0, create_date=2016-04-01, update_date=2016-04-01}, "
-				+ "{id=3, title=ニューロン３, content=コンテンツ３, neuron_level=2, left_edge=900.0, right_edge=1000.0, create_date=2016-04-01, update_date=2016-04-01}]"));
+		assertThat(actual, is(expected));
 	}
 	
 	@Test
@@ -70,120 +63,139 @@ public class NeuronDaoTest {
 		String title = "更新されたタイトル";
 		String content = "更新されたコンテンツ";
 		
+		String expected = "[{id=" + id + ", title=" + title + ", content=" + content + "}]";
+		
 		// Exercise
 		neuronDao.update(id, title, content);
 		String actual = String.valueOf(jdbc.queryForList("SELECT id, title, content FROM neuron WHERE id = ?",id));
 		
 		// Verify
-		assertThat(actual, is("[{id=" + id + ", title=" + title + ", content=" + content + "}]"));
+		assertThat(actual, is(expected));
 	}
 	
 	@Test
 	public void generate_ニューロンが生成されることを確認する() {
-	// 他の子ニューロンより左側であることを確かめていないため、要加筆
 		// SetUp
-		Integer parentId = 3;
-		Integer parentNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, parentId);
-		Float parentLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, parentId);
-		Float parentRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, parentId);
+		Integer id = 1;
 		
-		String title = "新しいニューロン"; // neuronDaoのgenerate()参照
+		String expectedTitle = "新しいニューロン";
+		Integer expectedNeuronLevel = 2;
+		Float expectedLeftEdge = (float) 1008;
+		Float expectedRightEdge = (float) 1016;
 		
 		// Exercise
-		neuronDao.generate(parentId);
-		String childTitle = jdbc.queryForObject("SELECT title FROM neuron WHERE title = ?", String.class, title);
-		Integer childNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE title = ?", Integer.class, title);
-		Float childLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE title = ?", Float.class, title);
-		Float childRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE title = ?", Float.class, title);
+		neuronDao.generate(id);
+		String actualTitle = jdbc.queryForObject("SELECT title FROM neuron WHERE title = ?", String.class, expectedTitle);
+		Integer actualNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE title = ?", Integer.class, expectedTitle);
+		Float actualLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE title = ?", Float.class, expectedTitle);;
+		Float actualRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE title = ?", Float.class, expectedTitle);;
 		
 		// Verify
-		assertThat(title, is(childTitle));
-		assertThat(childNeuronLevel, is(parentNeuronLevel+1));
-		assertThat(childLeftEdge, is(greaterThan(parentLeftEdge)));
-		assertThat(childRightEdge, is(lessThan(parentRightEdge)));
+		assertThat(actualTitle, is(expectedTitle));
+		assertThat(actualNeuronLevel, is(expectedNeuronLevel));
+		assertThat(actualLeftEdge, is(expectedLeftEdge));
+		assertThat(actualRightEdge, is(expectedRightEdge));
 	}
 	
 	@Test
 	public void extinct_ニューロンが削除されることを確認する() {
 		// SetUp
-		Integer id = 5;
+		Integer id = 2;
+		
+		String expected = "[]";
 		
 		// Exercise
 		neuronDao.extinct(id);
-		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM neuron WHERE id = " + id));
+		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM neuron WHERE left_edge BETWEEN ? AND ?", (float) 201, (float) 624));
 		
 		// Verify
-		assertThat(actual, is("[]"));
+		assertThat(actual, is(expected));
 	}
 	
 	@Test
-	// ※他ニューロンの座標の範囲内であることを確かめていないため、要加筆
-	// ※子ニューロンの深さを確かめていないため、要加筆
 	public void insert_ニューロンが挿入されることを確認する() {  
 		// SetUp
-		Integer id = 4;
-		Integer childNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, id);
-		Float childLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id);
-		Float childRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id);
+		Integer id = 2;
 		
-		String title = "挿入されたニューロン"; // neuronDaoのinsert()参照
+		String expectedTitle = "挿入されたニューロン";
+		Integer expectedNeuronLevel = 2;
+		Float expectedLeftEdge = (float) 101;
+		Float expectedRightEdge = (float) 724;
+		
+		Integer expectedId2NeuronLevel = 3;
+		Integer expectedId4NeuronLevel = 4;
+		Integer expectedId5NeuronLevel = 4;
 		
 		// Exercise
 		neuronDao.insert(id);
-		String insertedTitle = jdbc.queryForObject("SELECT title FROM neuron WHERE title = ?", String.class, title);
-		Integer insertedNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE title = ?", Integer.class, title);
-		Float insertedLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE title = ?", Float.class, title);
-		Float insertedRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE title = ?", Float.class, title);
+		String actualTitle = jdbc.queryForObject("SELECT title FROM neuron WHERE title = ?", String.class, expectedTitle);
+		Integer actualNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE title = ?", Integer.class, expectedTitle);
+		Float actualLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE title = ?", Float.class, expectedTitle);
+		Float actualRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE title = ?", Float.class, expectedTitle);
+		
+		Integer actualId2NeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, 2);
+		Integer actualId4NeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, 4);
+		Integer actualId5NeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, 5);
 		
 		// Verify
-		assertThat(title, is(insertedTitle));
-		assertThat(insertedNeuronLevel, is(childNeuronLevel));
-		assertThat(insertedLeftEdge, is(lessThan(childLeftEdge)));
-		assertThat(insertedRightEdge, is(greaterThan(childRightEdge)));
+			// 挿入されたニューロンが正しいことの確認
+			assertThat(actualTitle, is(expectedTitle));
+			assertThat(actualNeuronLevel, is(expectedNeuronLevel));
+			assertThat(actualLeftEdge, is(expectedLeftEdge));
+			assertThat(actualRightEdge, is(expectedRightEdge));
+			
+			// 挿入されたニューロンの子ニューロンが１つずつ深くなったことの確認
+			assertThat(actualId2NeuronLevel, is(expectedId2NeuronLevel));
+			assertThat(actualId4NeuronLevel, is(expectedId4NeuronLevel));
+			assertThat(actualId5NeuronLevel, is(expectedId5NeuronLevel));
 	}
 	
 	@Test
 	public void generateLeft_生成する際の左端座標が正しいことを確認する() {
-	// ※本来２パターン必要。要加筆
-		// SetUp
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		
-		Integer id = 1;
-		Float trueLeftEdge =  (float) 342;
-		
-		// Exercise
-		Float generatedLeft = neuronDao.generateLeft(id);
-		
-		// Verify
-		assertThat(generatedLeft, is(trueLeftEdge));
+		// 親ニューロンの左端と生成するニューロンの左端の間にニューロンが存在する場合
+			// SetUp
+			Integer id = 1;
+			
+			Float expectedLeftEdge =  (float) 1008;
+			
+			// Exercise
+			Float actualLeftEdge = neuronDao.generateLeft(id);
+			
+			// Verify
+			assertThat(actualLeftEdge, is(expectedLeftEdge));
+			
+		// 親ニューロンの左端と生成するニューロンの左端の間にニューロンが存在しない場合
+			// SetUp
+			neuronDao.extinct(2);
+			neuronDao.extinct(3);
+			
+			expectedLeftEdge =  (float) 342;
+			
+			// Exercise
+			actualLeftEdge = neuronDao.generateLeft(id);
+			
+			// Verify
+			assertThat(actualLeftEdge, is(expectedLeftEdge));
 	}
 	
 	@Test
 	public void generateRight_生成する際の右端座標が正しいことを確認する() {
-	// ※本来２パターン必要。要加筆
 		// SetUp
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		
 		Integer id = 1;
-		Float trueRightEdge =  (float) 683;
+		
+		Float expectedRightEdge =  (float) 1016;
 		
 		// Exercise
-		Float generatedRightEdge = neuronDao.generateRight(id);
+		Float actualRightEdge = neuronDao.generateRight(id);
 		
 		// Verify
-		assertThat(generatedRightEdge, is(trueRightEdge));
+		assertThat(actualRightEdge, is(expectedRightEdge));
 	}
 	
 	@Test
 	public void insertLeft_挿入する際の左端座標が正しいことを確認する() {
 	// ※本来３パターン必要。要加筆
 		// SetUp
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 201, 824, '2016-04-01', '2016-04-01')");
-		
 		Integer id = 2;
 		Float trueLeftEdge = (float) 101;
 		
@@ -198,10 +210,6 @@ public class NeuronDaoTest {
 	public void insertRihgt_挿入する際の右端座標が正しいことを確認する() {
 	// ※本来３パターン必要。要加筆
 		// SetUp
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 201, 824, '2016-04-01', '2016-04-01')");
-		
 		Integer id = 2;
 		Float trueRightEdge = (float) 924;
 		
@@ -286,54 +294,59 @@ public class NeuronDaoTest {
 		assertThat(actual, is(var2));
 	}
 	
-	// @Test
+	@Test
 	public void minLeftEdge() {
+	// ※値が親の右端座標になる場合を確かめていない。要加筆
 		// SetUp
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 200, 300, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 2, 400, 500, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 2, 600, 700, '2016-04-01', '2016-04-01')");
-		
-		Integer id = 2;
+		Integer id = 3;
 		Float trueMinLeftEdge = (float) 600;
-		Float rightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id); 
+		Float RightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id); 
 		
 		// Exercise
-		Float actualMinLeftEdge = neuronDao.minLeftEdge(rightEdge);
+		Float actualMinLeftEdge = neuronDao.minLeftEdge(RightEdge);
 		
 		// Verify
 		assertThat(actualMinLeftEdge, is(trueMinLeftEdge));
 	}
 	
-	// @Test
+	@Test
 	public void maxRightEdge() {
+	// ※値が親の左端座標になる場合を確かめていない。要加筆
 		// SetUp
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 200, 300, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 2, 400, 500, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 2, 600, 700, '2016-04-01', '2016-04-01')");
-		
-	}
-	
-	// @Test
-	public void parentLeftEdge() {
-		// SetUp
+		Integer id = 3;
+		Float trueMaxRightEdge = (float) 300;
+		Float LeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id); 
 		
 		// Exercise
+		Float actualMaxRightEdge = neuronDao.maxRightEdge(LeftEdge);
 		
 		// Verify
-
+		assertThat(actualMaxRightEdge, is(trueMaxRightEdge));
 	}
 	
-	// @Test
-	public void parentRightEdge() {
+	@Test
+	public void parentLeftEdge_親ニューロンの左端座標を出力する() {
 		// SetUp
+		Integer id = 3;
+		Float trueParentLeftEdge = (float) 1;
 		
 		// Exercise
+		Float actualParentLeftEdge = neuronDao.parentLeftEdge(id);
 		
 		// Verify
-
+		assertThat(actualParentLeftEdge, is(trueParentLeftEdge));
+	}
+	
+	@Test
+	public void parentRightEdge_親ニューロンの右端座標を出力する() {
+		// SetUp
+Integer id = 3;
+		Float trueParentRightEdge = (float) 1024;
+		
+		// Exercise
+		Float actualParentRightEdge = neuronDao.parentRightEdge(id);
+		
+		// Verify
+		assertThat(actualParentRightEdge, is(trueParentRightEdge));
 	}
 }
