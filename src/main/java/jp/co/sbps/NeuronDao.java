@@ -53,7 +53,7 @@ public class NeuronDao {
 	}
 
 	// ニューロンの削除
-	public void delete(Integer id) {
+	public void extinct(Integer id) {
 		jdbc.update("DELETE FROM neuron WHERE id = ? OR left_edge " + "BETWEEN ? AND ?", id, leftEdge(id),
 				rightEdge(id));
 	}

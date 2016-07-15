@@ -16,7 +16,7 @@ public class MainController {
 	
 	@RequestMapping("brainscope")
 	public String brainscope(Integer id, String title, String content, String moveUpFlag, String moveDownFlag,
-			String updateFlag, String generateFlag, String deleteFlag, String insertFlag, Model model) {
+			String updateFlag, String generateFlag, String extinctFlag, String insertFlag, Model model) {
 
 		// スコープアドレスの移動（上り）
 		if (id != null && neuronDao.neuronLevel(id) - 1 > 0 && moveUpFlag != null) {
@@ -34,8 +34,8 @@ public class MainController {
 		}
 
 		// ニューロンの削除
-		if (id != null && deleteFlag != null) {
-			neuronDao.delete(id);
+		if (id != null && extinctFlag != null) {
+			neuronDao.extinct(id);
 		}
 
 		// ニューロンの更新

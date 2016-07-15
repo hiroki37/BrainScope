@@ -43,7 +43,7 @@ public class ConfigDaoTest {
 	}
 	
 	@Test
-	public void move_up_スコープアドレスが適切に移動していることを確認する() {
+	public void moveUp_スコープアドレスが適切に移動していることを確認する() {
 		// SetUp
 		jdbc.update("UPDATE config SET scope_address=2");
 		
@@ -56,7 +56,7 @@ public class ConfigDaoTest {
 	}
 	
 	@Test
-	public void move_down_スコープアドレスが適切に移動していることを確認する() {
+	public void moveDown_スコープアドレスが適切に移動していることを確認する() {
 		// SetUp
 		jdbc.update("UPDATE config SET scope_address=1");
 		
@@ -69,7 +69,7 @@ public class ConfigDaoTest {
 	}
 	
 	@Test
-	public void scope_address_現在のスコープアドレスが正しく取得できることを確認する() {
+	public void scopeAddress_現在のスコープアドレスが正しく取得できることを確認する() {
 		// SetUp
 		jdbc.update("UPDATE config SET scope_address=1");
 		

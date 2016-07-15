@@ -1,6 +1,6 @@
 package jp.co.sbps;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.text.SimpleDateFormat;
@@ -49,9 +49,10 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void display_現在のスコープアドレスのニューロンとその１つだけ深い子ニューロンを返すことを確認する() {
+	public void display_現在のスコープアドレスのニューロンとそれより１つ深いニューロンのすべてを返すことを確認する() {
 		// SetUp
-		jdbc.update("UPDATE config SET scope_address=1");
+		Integer scopeAddress = 1;
+		jdbc.update("UPDATE config SET scope_address=" + scopeAddress);
 		
 		// Exercise
 		String actual = String.valueOf(neuronDao.display());
@@ -71,86 +72,144 @@ public class NeuronDaoTest {
 		
 		// Exercise
 		neuronDao.update(id, title, content);
-		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM neuron WHERE id = " + id));
+		String actual = String.valueOf(jdbc.queryForList("SELECT id, title, content FROM neuron WHERE id = ?",id));
 		
 		// Verify
-		assertThat(actual, is("[{id=1, title=" + title + ", content=" + content + ", neuron_level=1, left_edge=1.0, right_edge=1024.0, create_date=2016-04-01, update_date=" + sdf.format(date) + "}]"));
+		assertThat(actual, is("[{id=" + id + ", title=" + title + ", content=" + content + "}]"));
 	}
 	
 	@Test
 	public void generate_ニューロンが生成されることを確認する() {
+	// 他の子ニューロンより左側であることを確かめていないため、要加筆
 		// SetUp
-		Integer id = 4;
+		Integer parentId = 3;
+		Integer parentNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, parentId);
+		Float parentLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, parentId);
+		Float parentRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, parentId);
+		
+		String title = "新しいニューロン"; // neuronDaoのgenerate()参照
 		
 		// Exercise
-		neuronDao.generate(id);
-		String actual = String.valueOf(jdbc.queryForList("SELECT title FROM neuron WHERE neuron_level = 4"));
+		neuronDao.generate(parentId);
+		String childTitle = jdbc.queryForObject("SELECT title FROM neuron WHERE title = ?", String.class, title);
+		Integer childNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE title = ?", Integer.class, title);
+		Float childLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE title = ?", Float.class, title);
+		Float childRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE title = ?", Float.class, title);
 		
 		// Verify
-		assertThat(actual, is("[{title=新しいニューロン}]"));
+		assertThat(title, is(childTitle));
+		assertThat(childNeuronLevel, is(parentNeuronLevel+1));
+		assertThat(childLeftEdge, is(greaterThan(parentLeftEdge)));
+		assertThat(childRightEdge, is(lessThan(parentRightEdge)));
 	}
 	
 	@Test
-	public void delete_ニューロンが削除されることを確認する() {
+	public void extinct_ニューロンが削除されることを確認する() {
 		// SetUp
 		Integer id = 5;
 		
 		// Exercise
-		neuronDao.delete(id);
+		neuronDao.extinct(id);
 		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM neuron WHERE id = " + id));
 		
 		// Verify
 		assertThat(actual, is("[]"));
 	}
 	
-	// @Test
-	public void insert_ニューロンが挿入されることを確認する() {
+	@Test
+	// ※他ニューロンの座標の範囲内であることを確かめていないため、要加筆
+	// ※子ニューロンの深さを確かめていないため、要加筆
+	public void insert_ニューロンが挿入されることを確認する() {  
 		// SetUp
+		Integer id = 4;
+		Integer childNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, id);
+		Float childLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id);
+		Float childRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id);
+		
+		String title = "挿入されたニューロン"; // neuronDaoのinsert()参照
 		
 		// Exercise
+		neuronDao.insert(id);
+		String insertedTitle = jdbc.queryForObject("SELECT title FROM neuron WHERE title = ?", String.class, title);
+		Integer insertedNeuronLevel = jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE title = ?", Integer.class, title);
+		Float insertedLeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE title = ?", Float.class, title);
+		Float insertedRightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE title = ?", Float.class, title);
 		
 		// Verify
-
+		assertThat(title, is(insertedTitle));
+		assertThat(insertedNeuronLevel, is(childNeuronLevel));
+		assertThat(insertedLeftEdge, is(lessThan(childLeftEdge)));
+		assertThat(insertedRightEdge, is(greaterThan(childRightEdge)));
 	}
 	
-	// @Test
-	public void generateLeft() {
+	@Test
+	public void generateLeft_生成する際の左端座標が正しいことを確認する() {
+	// ※本来２パターン必要。要加筆
 		// SetUp
+		jdbc.update("DELETE FROM neuron");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
+		
+		Integer id = 1;
+		Float trueLeftEdge =  (float) 342;
 		
 		// Exercise
+		Float generatedLeft = neuronDao.generateLeft(id);
 		
 		// Verify
-
+		assertThat(generatedLeft, is(trueLeftEdge));
 	}
 	
-	// @Test
-	public void generateRight() {
+	@Test
+	public void generateRight_生成する際の右端座標が正しいことを確認する() {
+	// ※本来２パターン必要。要加筆
 		// SetUp
+		jdbc.update("DELETE FROM neuron");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
+		
+		Integer id = 1;
+		Float trueRightEdge =  (float) 683;
 		
 		// Exercise
+		Float generatedRightEdge = neuronDao.generateRight(id);
 		
 		// Verify
-
+		assertThat(generatedRightEdge, is(trueRightEdge));
 	}
 	
-	// @Test
-	public void insertLeft() {
+	@Test
+	public void insertLeft_挿入する際の左端座標が正しいことを確認する() {
+	// ※本来３パターン必要。要加筆
 		// SetUp
+		jdbc.update("DELETE FROM neuron");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 201, 824, '2016-04-01', '2016-04-01')");
+		
+		Integer id = 2;
+		Float trueLeftEdge = (float) 101;
 		
 		// Exercise
+		Float insertedLeftEdge = neuronDao.insertLeft(id); 
 		
 		// Verify
-
+		assertThat(insertedLeftEdge, is(trueLeftEdge));
 	}
 	
-	// @Test
-	public void insertRihgt() {
+	@Test
+	public void insertRihgt_挿入する際の右端座標が正しいことを確認する() {
+	// ※本来３パターン必要。要加筆
 		// SetUp
+		jdbc.update("DELETE FROM neuron");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 201, 824, '2016-04-01', '2016-04-01')");
+		
+		Integer id = 2;
+		Float trueRightEdge = (float) 924;
 		
 		// Exercise
+		Float insertedRightEdge = neuronDao.insertRight(id); 
 		
 		// Verify
-
+		assertThat(insertedRightEdge, is(trueRightEdge));
 	}
 	
 	@Test
@@ -228,23 +287,34 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void maxRightEdge() {
+	public void minLeftEdge() {
 		// SetUp
+		jdbc.update("DELETE FROM neuron");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 200, 300, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 2, 400, 500, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 2, 600, 700, '2016-04-01', '2016-04-01')");
+		
+		Integer id = 2;
+		Float trueMinLeftEdge = (float) 600;
+		Float rightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id); 
 		
 		// Exercise
+		Float actualMinLeftEdge = neuronDao.minLeftEdge(rightEdge);
 		
 		// Verify
-
+		assertThat(actualMinLeftEdge, is(trueMinLeftEdge));
 	}
 	
 	// @Test
-	public void minLeftEdge() {
+	public void maxRightEdge() {
 		// SetUp
+		jdbc.update("DELETE FROM neuron");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, 1, 1024, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, 200, 300, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 2, 400, 500, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 2, 600, 700, '2016-04-01', '2016-04-01')");
 		
-		// Exercise
-		
-		// Verify
-
 	}
 	
 	// @Test
