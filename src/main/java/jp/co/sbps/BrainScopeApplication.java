@@ -10,3 +10,5 @@ public class BrainScopeApplication {
 		SpringApplication.run(BrainScopeApplication.class, args);
 	}
 }
+
+// 自宅で編集した結果を業務環境に移行させるテスト
