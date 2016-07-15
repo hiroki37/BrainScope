@@ -211,7 +211,7 @@ public class NeuronDaoTest {
 	// ※本来３パターン必要。要加筆
 		// SetUp
 		Integer id = 2;
-		Float trueRightEdge = (float) 924;
+		Float trueRightEdge = (float) 724;
 		
 		// Exercise
 		Float insertedRightEdge = neuronDao.insertRight(id); 
@@ -296,32 +296,56 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void minLeftEdge() {
-	// ※値が親の右端座標になる場合を確かめていない。要加筆
-		// SetUp
-		Integer id = 3;
-		Float trueMinLeftEdge = (float) 600;
-		Float RightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id); 
-		
-		// Exercise
-		Float actualMinLeftEdge = neuronDao.minLeftEdge(RightEdge);
-		
-		// Verify
-		assertThat(actualMinLeftEdge, is(trueMinLeftEdge));
+		// 対象ニューロンの右側にニューロンがない場合
+			// SetUp
+			Integer id = 3;
+			Float trueMinLeftEdge = null;
+			Float RightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id); 
+			
+			// Exercise
+			Float actualMinLeftEdge = neuronDao.minLeftEdge(RightEdge);
+			
+			// Verify
+			assertThat(actualMinLeftEdge, is(trueMinLeftEdge));
+			
+		// 対象ニューロンの右側にニューロンがある場合
+			// SetUp
+			id = 2;
+			trueMinLeftEdge = (float) 824;
+			RightEdge = jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id); 
+			
+			// Exercise
+			actualMinLeftEdge = neuronDao.minLeftEdge(RightEdge);
+			
+			// Verify
+			assertThat(actualMinLeftEdge, is(trueMinLeftEdge));
 	}
 	
 	@Test
 	public void maxRightEdge() {
-	// ※値が親の左端座標になる場合を確かめていない。要加筆
-		// SetUp
-		Integer id = 3;
-		Float trueMaxRightEdge = (float) 300;
-		Float LeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id); 
+		// 対象ニューロンの左側にニューロンがない場合
+			// SetUp
+			Integer id = 2;
+			Float trueMaxRightEdge = null;
+			Float LeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id); 
+			
+			// Exercise
+			Float actualMaxRightEdge = neuronDao.maxRightEdge(LeftEdge);
+			
+			// Verify
+			assertThat(actualMaxRightEdge, is(trueMaxRightEdge));
 		
-		// Exercise
-		Float actualMaxRightEdge = neuronDao.maxRightEdge(LeftEdge);
-		
-		// Verify
-		assertThat(actualMaxRightEdge, is(trueMaxRightEdge));
+		// 対象ニューロンの左側にニューロンがある場合
+			// SetUp
+			id = 3;
+			trueMaxRightEdge = (float) 624;
+			LeftEdge = jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id); 
+			
+			// Exercise
+			actualMaxRightEdge = neuronDao.maxRightEdge(LeftEdge);
+			
+			// Verify
+			assertThat(actualMaxRightEdge, is(trueMaxRightEdge));
 	}
 	
 	@Test
