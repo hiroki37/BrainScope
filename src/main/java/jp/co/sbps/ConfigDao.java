@@ -18,20 +18,20 @@ public class ConfigDao {
 	private JdbcTemplate jdbc;
 
 	// スコープアドレスの移動（上り）
-	public void move_up(Integer id) {
+	public void moveUp(Integer id) {
 		jdbc.update("UPDATE config SET scope_address = (SELECT id FROM neuron WHERE left_edge = ?)",
-				neuronDao.parent_left_edge(id));
+				neuronDao.parentLeftEdge(id));
 	}
 
 	// スコープアドレスの移動（下り）
-	public void move_down(Integer id) {
+	public void moveDown(Integer id) {
 		jdbc.update("UPDATE config SET scope_address = ?", id);
 	}
 
 	// ＝＝＝＝＝SQLパーツ＝＝＝＝＝
 
 	//現在のスコープアドレス
-	public Integer scope_address() { 
+	public Integer scopeAddress() { 
 		return jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 	}
 }

@@ -114,7 +114,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void generate_left() {
+	public void generateLeft() {
 		// SetUp
 		
 		// Exercise
@@ -124,7 +124,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void generate_right() {
+	public void generateRight() {
 		// SetUp
 		
 		// Exercise
@@ -134,7 +134,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void insert_left() {
+	public void insertLeft() {
 		// SetUp
 		
 		// Exercise
@@ -144,7 +144,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void insert_rihgt() {
+	public void insertRihgt() {
 		// SetUp
 		
 		// Exercise
@@ -183,7 +183,7 @@ public class NeuronDaoTest {
 		Integer id = 1;
 		
 		// Exercise
-		Integer actual = neuronDao.neuron_level(id);
+		Integer actual = neuronDao.neuronLevel(id);
 		
 		// Verify
 		assertThat(actual, is(1));
@@ -195,7 +195,7 @@ public class NeuronDaoTest {
 		Integer id = 1;
 		
 		// Exercise
-		Float actual = neuronDao.left_edge(id);
+		Float actual = neuronDao.leftEdge(id);
 		Float expected = (float) 1;
 		
 		// Verify
@@ -208,7 +208,7 @@ public class NeuronDaoTest {
 		Integer id = 1;
 		
 		// Exercise
-		Float actual = neuronDao.right_edge(id);
+		Float actual = neuronDao.rightEdge(id);
 		Float expected = (float) 1024;
 		
 		// Verify
@@ -228,7 +228,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void max_right_edge() {
+	public void maxRightEdge() {
 		// SetUp
 		
 		// Exercise
@@ -238,7 +238,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void min_left_edge() {
+	public void minLeftEdge() {
 		// SetUp
 		
 		// Exercise
@@ -248,7 +248,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void parent_left_edge() {
+	public void parentLeftEdge() {
 		// SetUp
 		
 		// Exercise
@@ -258,7 +258,7 @@ public class NeuronDaoTest {
 	}
 	
 	// @Test
-	public void parent_right_edge() {
+	public void parentRightEdge() {
 		// SetUp
 		
 		// Exercise

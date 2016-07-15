@@ -25,8 +25,8 @@ public class NeuronDao {
 		return jdbc.queryForList(
 				"SELECT * FROM neuron WHERE id = ? "
 				+ "OR id IN (SELECT id FROM neuron WHERE neuron_level = ? + 1 AND left_edge BETWEEN ? AND ? ) ORDER BY left_edge ASC;",
-				configDao.scope_address(), neuron_level(configDao.scope_address()),
-				left_edge(configDao.scope_address()), right_edge(configDao.scope_address()));
+				configDao.scopeAddress(), neuronLevel(configDao.scopeAddress()),
+				leftEdge(configDao.scopeAddress()), rightEdge(configDao.scopeAddress()));
 	}
 
 	// ニューロンの更新
@@ -37,8 +37,8 @@ public class NeuronDao {
 	// ニューロンの生成
 	public void generate(Integer id) {
 		// 生成時の初期タイトル・コンテンツ
-		String new_title = "新しいニューロン";
-		String new_content = "";
+		String newTitle = "新しいニューロン";
+		String newContent = "";
 
 		jdbc.update("INSERT INTO neuron (title, content, neuron_level, left_edge, right_edge, create_date, update_date)"
 				+ "VALUES("
@@ -49,20 +49,20 @@ public class NeuronDao {
 				+ "?,"
 				+ "current_timestamp,"
 				+ "current_timestamp)",
-				new_title, new_content, neuron_level(id), generate_left(id), generate_right(id));
+				newTitle, newContent, neuronLevel(id), generateLeft(id), generateRight(id));
 	}
 
 	// ニューロンの削除
 	public void delete(Integer id) {
-		jdbc.update("DELETE FROM neuron WHERE id = ? OR left_edge " + "BETWEEN ? AND ?", id, left_edge(id),
-				right_edge(id));
+		jdbc.update("DELETE FROM neuron WHERE id = ? OR left_edge " + "BETWEEN ? AND ?", id, leftEdge(id),
+				rightEdge(id));
 	}
 
 	// ニューロンの挿入（親ニューロンと子ニューロンの間）
 	public void insert(Integer id) {
 		// 生成時の初期タイトル・コンテンツ
-		String new_title = "挿入されたニューロン";
-		String new_content = "";
+		String newTitle = "挿入されたニューロン";
+		String newContent = "";
 		
 		// 新しいニューロンを挿入
 		jdbc.update("INSERT INTO neuron (title, content, neuron_level, left_edge, right_edge, create_date, update_date)"
@@ -74,45 +74,45 @@ public class NeuronDao {
 				+ "?,"
 				+ "current_timestamp,"
 				+ "current_timestamp)",
-				new_title, new_content, neuron_level(id), insert_left(id), insert_right(id));
+				newTitle, newContent, neuronLevel(id), insertLeft(id), insertRight(id));
 		
 		// 自身と子ニューロンを１つ深くする
 		jdbc.update("UPDATE neuron SET neuron_level = neuron_level + 1 WHERE left_edge BETWEEN ? AND ?",
-				left_edge(id), right_edge(id));
+				leftEdge(id), rightEdge(id));
 	}
 
 	// ＝＝＝＝＝ＳＱＬパーツ＝＝＝＝＝
 
-	// 生成する際の、left_edge座標
-	public Float generate_left(Integer id) {
-		Float max_right_edge = jdbc.queryForObject("SELECT MAX(right_edge) FROM neuron WHERE right_edge < ?",
-				Float.class, right_edge(id));
+	// 生成する際の、左端座標
+	public Float generateLeft(Integer id) {
+		Float maxRightEdge = jdbc.queryForObject("SELECT MAX(right_edge) FROM neuron WHERE right_edge < ?",
+				Float.class, rightEdge(id));
 
-		return  greatest(left_edge(id), max_right_edge) + (right_edge(id) - greatest(left_edge(id), max_right_edge)) / 3;
+		return  greatest(leftEdge(id), maxRightEdge) + (rightEdge(id) - greatest(leftEdge(id), maxRightEdge)) / 3;
 	}
 
-	// 生成する際の、right_edge座標
-	public Float generate_right(Integer id) {
-		Float max_right_edge = jdbc.queryForObject("SELECT MAX(right_edge) FROM neuron WHERE right_edge < ?",
-				Float.class, right_edge(id));
+	// 生成する際の、右端座標
+	public Float generateRight(Integer id) {
+		Float maxRightEdge = jdbc.queryForObject("SELECT MAX(right_edge) FROM neuron WHERE right_edge < ?",
+				Float.class, rightEdge(id));
 		
-		return greatest(left_edge(id), max_right_edge) + (right_edge(id) - greatest(left_edge(id), max_right_edge)) * 2 / 3;
+		return greatest(leftEdge(id), maxRightEdge) + (rightEdge(id) - greatest(leftEdge(id), maxRightEdge)) * 2 / 3;
 	}
 	
-	// 挿入する際の、left_edge座標
-	public Float insert_left(Integer id) {
-		Float max_right_edge = jdbc.queryForObject("SELECT GREATEST(?, ?)",
-				Float.class, max_right_edge(left_edge(id)), parent_left_edge(id));
+	// 挿入する際の、左端座標
+	public Float insertLeft(Integer id) {
+		Float maxRightEdge = jdbc.queryForObject("SELECT GREATEST(?, ?)",
+				Float.class, maxRightEdge(leftEdge(id)), parentLeftEdge(id));
 		
-		return max_right_edge + (left_edge(id) - max_right_edge) / 2;
+		return maxRightEdge + (leftEdge(id) - maxRightEdge) / 2;
 	}
 	
-	// 挿入する際の、right_edge座標
-	public Float insert_right(Integer id) {
-		Float max_left_edge = jdbc.queryForObject("SELECT LEAST(?, ?)",
-				Float.class, min_left_edge(right_edge(id)), parent_right_edge(id));
+	// 挿入する際の、右端座標
+	public Float insertRight(Integer id) {
+		Float maxLeftEdge = jdbc.queryForObject("SELECT LEAST(?, ?)",
+				Float.class, minLeftEdge(rightEdge(id)), parentRightEdge(id));
 		
-		return right_edge(id) + (max_left_edge - right_edge(id)) / 2;
+		return rightEdge(id) + (maxLeftEdge - rightEdge(id)) / 2;
 	}
 	
 	// ニューロンのタイトル
@@ -126,17 +126,17 @@ public class NeuronDao {
 	}
 
 	// ニューロンの深さ
-	public Integer neuron_level(Integer id) {
+	public Integer neuronLevel(Integer id) {
 		return jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, id);
 	}
 
-	// ニューロンの左端
-	public Float left_edge(Integer id) {
+	// ニューロンの左端座標
+	public Float leftEdge(Integer id) {
 		return jdbc.queryForObject("SELECT left_edge FROM neuron WHERE id = ?", Float.class, id);
 	}
 
-	// ニューロンの右端
-	public Float right_edge(Integer id) {
+	// ニューロンの右端座標
+	public Float rightEdge(Integer id) {
 		return jdbc.queryForObject("SELECT right_edge FROM neuron WHERE id = ?", Float.class, id);
 	}
 
@@ -145,25 +145,25 @@ public class NeuronDao {
 		return jdbc.queryForObject("SELECT GREATEST(?, ?)", Float.class, var1, var2);
 	}
 
-	// right_edge以上で最少のleft_edge
-	public Float min_left_edge(Float right_edge) {
-		return jdbc.queryForObject("SELECT MIN(left_edge) FROM neuron WHERE left_edge > ?", Float.class, right_edge);
+	// 右端座標以上で最少の左端座標
+	public Float minLeftEdge(Float rightEdge) {
+		return jdbc.queryForObject("SELECT MIN(left_edge) FROM neuron WHERE left_edge > ?", Float.class, rightEdge);
 	}
 	
-	// left_edge以下で最大のright_edge
-	public Float max_right_edge(Float left_edge) {
-		return jdbc.queryForObject("SELECT MAX(right_edge) FROM neuron WHERE right_edge < ?", Float.class, left_edge);
+	// 左端座標以下で最大の右端座標
+	public Float maxRightEdge(Float leftEdge) {
+		return jdbc.queryForObject("SELECT MAX(right_edge) FROM neuron WHERE right_edge < ?", Float.class, leftEdge);
 	}
 
-	// 親のleft_edge
-	public Float parent_left_edge(Integer id) {
+	// 親の左端座標
+	public Float parentLeftEdge(Integer id) {
 		return jdbc.queryForObject("SELECT MAX(left_edge) FROM neuron WHERE left_edge < ? AND neuron_level = ? - 1",
-				Float.class, left_edge(id), neuron_level(id));
+				Float.class, leftEdge(id), neuronLevel(id));
 	}
 
-	// 親のright_edge
-	public Float parent_right_edge(Integer id) {
+	// 親の右端座標
+	public Float parentRightEdge(Integer id) {
 		return jdbc.queryForObject("SELECT MIN(right_edge) FROM neuron WHERE right_edge > ? AND neuron_level = ? - 1",
-				Float.class, right_edge(id), neuron_level(id));
+				Float.class, rightEdge(id), neuronLevel(id));
 	}
 }

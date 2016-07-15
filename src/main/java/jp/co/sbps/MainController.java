@@ -15,36 +15,36 @@ public class MainController {
 	ConfigDao configDao;
 	
 	@RequestMapping("brainscope")
-	public String brainscope(Integer id, String title, String content, String move_up_flag, String move_down_flag,
-			String update_flag, String generate_flag, String delete_flag, String insert_flag, Model model) {
+	public String brainscope(Integer id, String title, String content, String moveUpFlag, String moveDownFlag,
+			String updateFlag, String generateFlag, String deleteFlag, String insertFlag, Model model) {
 
 		// スコープアドレスの移動（上り）
-		if (id != null && neuronDao.neuron_level(id) - 1 > 0 && move_up_flag != null) {
-			configDao.move_up(id);
+		if (id != null && neuronDao.neuronLevel(id) - 1 > 0 && moveUpFlag != null) {
+			configDao.moveUp(id);
 		}
 
 		// スコープアドレスの移動（下り）
-		if (id != null && move_down_flag != null) {
-			configDao.move_down(id);
+		if (id != null && moveDownFlag != null) {
+			configDao.moveDown(id);
 		}
 
 		// ニューロンの生成
-		if (generate_flag != null) {
+		if (generateFlag != null) {
 			neuronDao.generate(id);
 		}
 
 		// ニューロンの削除
-		if (id != null && delete_flag != null) {
+		if (id != null && deleteFlag != null) {
 			neuronDao.delete(id);
 		}
 
 		// ニューロンの更新
-		if (id != null && update_flag != null) {
+		if (id != null && updateFlag != null) {
 			neuronDao.update(id, title, content);
 		}
 
 		// ニューロンの挿入
-		if (id != null && insert_flag != null) {
+		if (id != null && insertFlag != null) {
 			neuronDao.insert(id);
 		}
 

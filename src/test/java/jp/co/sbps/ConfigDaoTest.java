@@ -48,7 +48,7 @@ public class ConfigDaoTest {
 		jdbc.update("UPDATE config SET scope_address=2");
 		
 		// Exercise
-		configDao.move_up(2);
+		configDao.moveUp(2);
 		Integer actual = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 		
 		// Verify
@@ -61,7 +61,7 @@ public class ConfigDaoTest {
 		jdbc.update("UPDATE config SET scope_address=1");
 		
 		// Exercise
-		configDao.move_down(2);
+		configDao.moveDown(2);
 		Integer actual = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 		
 		// Verify
@@ -74,7 +74,7 @@ public class ConfigDaoTest {
 		jdbc.update("UPDATE config SET scope_address=1");
 		
 		// Exercise
-		Integer actual = configDao.scope_address();
+		Integer actual = configDao.scopeAddress();
 		
 		// Verify
 		assertThat(actual, is(1));
