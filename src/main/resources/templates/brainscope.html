@@ -5,8 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>BrainScope</title>
 	<link rel="stylesheet" href="./css/default.css" />
-	<link rel="stylesheet" href="./css/bootstrap/css/bootstrap.min.css" media="screen" />
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 	
 </head>
 
@@ -28,7 +27,7 @@
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="moveUpFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.get(0).id}" />
-							<button class="btn btn-sm" type="submit" title="戻る"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="戻る"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの生成 -->
 						<form class="inline" method="get" action="brainscope">
@@ -75,7 +74,7 @@
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="moveDownFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
-							<button class="btn btn-sm" type="submit" title="進む"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="進む"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの削除 -->
 						<form class="inline" method="get" action="brainscope">
