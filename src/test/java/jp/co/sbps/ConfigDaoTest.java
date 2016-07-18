@@ -45,39 +45,44 @@ public class ConfigDaoTest {
 	@Test
 	public void moveUp_スコープアドレスが適切に移動していることを確認する() {
 		// SetUp
-		jdbc.update("UPDATE config SET scope_address=2");
+		Integer id = 2;
+		jdbc.update("UPDATE config SET scope_address=?", id);
+		
+		Integer expected = 1;
 		
 		// Exercise
-		configDao.moveUp(2);
+		configDao.moveUp(id);
 		Integer actual = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 		
 		// Verify
-		assertThat(actual, is(1));
+		assertThat(actual, is(expected));
 	}
 	
 	@Test
 	public void moveDown_スコープアドレスが適切に移動していることを確認する() {
 		// SetUp
-		jdbc.update("UPDATE config SET scope_address=1");
+		Integer id = 2;
+		
+		Integer expected = 2;
 		
 		// Exercise
-		configDao.moveDown(2);
+		configDao.moveDown(id);
 		Integer actual = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 		
 		// Verify
-		assertThat(actual, is(2));
+		assertThat(actual, is(expected));
 	}
 	
 	@Test
 	public void scopeAddress_現在のスコープアドレスが正しく取得できることを確認する() {
 		// SetUp
-		jdbc.update("UPDATE config SET scope_address=1");
+		Integer expected = 1;
 		
 		// Exercise
 		Integer actual = configDao.scopeAddress();
 		
 		// Verify
-		assertThat(actual, is(1));
+		assertThat(actual, is(expected));
 	}
 
 }

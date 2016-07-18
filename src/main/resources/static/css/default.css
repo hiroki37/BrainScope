@@ -1,28 +1,18 @@
-/* タイトル文字列 */
-.title {
-	color: #0000ff;
-	font-size: 150%;
-	font-weight: bold;
-}
-
 /* アイコン */
-.size-50 {
-	width: 50px;
-	height: 50px;
-	position: relative;
-}
-
-.adjust {
-	top: -3px;
-	left: -8px;
-}
-
 .inline {
 	display: inline;
 }
 
-.cursor {
-	cursor: pointer;
+.transition {
+	transition: all .2s;
+}
+
+.button {
+	background-color: #DCDCDC;
+}
+
+.button:hover {
+	background-color: #ffffff;
 }
 
 /* テーブル */
@@ -34,20 +24,11 @@
 	width: 100%;
 }
 
-.border {
-	border: solid 2px;
-}
-
-.border-color {
-	border-color: blue;
-}
-
 .float {
 	float: left;
 }
 
 /* テキストエリア */
-
 .textarea {
 	width: 100%;
 	resize: none;
@@ -55,12 +36,4 @@
 
 .display {
 	display: none;
-}
-
-.parent_height {
-	height: 264px;
-}
-
-.child_height {
-	height: 50px;
 }

@@ -24,19 +24,19 @@
 				<tr>
 					<td>
 						<!-- スコープアドレスの移動（上り） -->
-						<form class="inline" method="get" action="brainscope">
+						<form class="inline" method="post" action="brainscope">
 							<input type="hidden" name="moveUpFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.get(0).id}" />
 							<button class="btn btn-sm" type="submit" title="戻る"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの生成 -->
-						<form class="inline" method="get" action="brainscope">
+						<form class="inline" method="post" action="brainscope">
 							<input type="hidden" name="generateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.get(0).id}" />
 							<button class="btn btn-sm" type="submit" title="ニューロンを生成"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの更新 -->
-						<form method="get" action="brainscope">
+						<form method="post" action="brainscope">
 							<input type="hidden" name="updateFlag" value="1" />
 							<table class="width-100per">
 								<tr>
@@ -50,7 +50,7 @@
 										<div class="input-group">
 											<input class="form-control input-sm" name="title" placeholder="Title" th:value="${brainscope.get(0).title}" />
 											<span class="input-group-btn">
-												<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Save</button>
+												<button class="btn btn-sm btn-success" type="submit"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Save</button>
 											</span>
 										</div>
 									</td>
@@ -71,25 +71,25 @@
 				<tr th:each="brainscope, iterStat : ${brainscope}" th:class="${iterStat.first} ? 'display'">
 					<td>
 						<!-- スコープアドレスの移動（下り） -->
-						<form class="inline" method="get" action="brainscope">
+						<form class="inline" method="post" action="brainscope">
 							<input type="hidden" name="moveDownFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
 							<button class="btn btn-sm" type="submit" title="進む"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの削除 -->
-						<form class="inline" method="get" action="brainscope">
+						<form class="inline" method="post" action="brainscope">
 							<input type="hidden" name="extinctFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
 							<button class="btn btn-sm" type="submit" title="ニューロンを削除"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの挿入 -->
-						<form class="inline" method="get" action="brainscope">
+						<form class="inline" method="post" action="brainscope">
 							<input type="hidden" name="insertFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
 							<button class="btn btn-sm" type="submit" title="ニューロンを挿入"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの更新 -->
-						<form method="get" action="brainscope">
+						<form method="post" action="brainscope">
 							<input type="hidden" name="updateFlag" value="1" />
 							<table class="width-100per">
 								<tr>
@@ -103,7 +103,7 @@
 										<div class="input-group">
 											<input class="form-control input-sm" name="title" placeholder="Title" th:value="${brainscope.title}" />
 											<span class="input-group-btn">
-												<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Save</button>
+												<button class="btn btn-sm btn-success" type="submit"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Save</button>
 											</span>
 										</div>
 									</td>
@@ -124,13 +124,29 @@
 		<div class="row" style="padding-top: 400px">
 			<table border="1" width="100%">
 				<tr>
-					<td rowspan="200" class="col-sm-6">aaa</td>
+					<td rowspan="5" width="50%">
+						<textarea class="form-control textarea">工事中</textarea>
+					</td>
 				</tr>
 				<tr>
-					<td class="col-sm-6">bbb</td>
+					<td>
+						bbb
+					</td>
 				</tr>
 				<tr>
-					<td class="col-sm-6">bbb</td>
+					<td>
+						bbb
+					</td>
+				</tr>
+				<tr>
+					<td>
+						bbb
+					</td>
+				</tr>
+				<tr>
+					<td>
+						bbb
+					</td>
 				</tr>
 			</table>
 		</div>
