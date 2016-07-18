@@ -28,13 +28,13 @@
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="moveUpFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.get(0).id}" />
-							<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="戻る"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの生成 -->
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="generateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.get(0).id}" />
-							<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="ニューロンを生成"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの更新 -->
 						<form method="get" action="brainscope">
@@ -75,19 +75,19 @@
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="moveDownFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
-							<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="進む"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの削除 -->
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="extinctFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
-							<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="ニューロンを削除"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの挿入 -->
 						<form class="inline" method="get" action="brainscope">
 							<input type="hidden" name="insertFlag" value="1" />
 							<input type="hidden" name="id" th:value="${brainscope.id}" />
-							<button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
+							<button class="btn btn-sm" type="submit" title="ニューロンを挿入"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの更新 -->
 						<form method="get" action="brainscope">
