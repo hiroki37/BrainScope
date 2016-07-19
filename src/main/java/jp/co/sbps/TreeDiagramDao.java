@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 public class TreeDiagramDao {
 	
 	@Autowired
+	NeuronDao neuronDao;
+	
+	@Autowired
 	private JdbcTemplate jdbc;
 	
 	// 木構造の生成
@@ -28,7 +31,7 @@ public class TreeDiagramDao {
 	
 	// 木構造の挿入
 	public void insertTreeDiagram(Integer id, Integer youngestId) {
-		generateTreeDiagram(id, youngestId);
+		generateTreeDiagram(neuronDao.parentId(id), youngestId);
 		jdbc.update("INSERT INTO tree_diagram (ancestor, descendant) "
 				+ "(SELECT ?, descendant FROM tree_diagram WHERE ancestor = ?)", youngestId, id);
 	}

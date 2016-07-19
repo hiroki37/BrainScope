@@ -59,7 +59,7 @@ public class NeuronDaoTest {
 				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, create_date=2016-04-01, update_date=2016-04-01}]";
 		
 		// Exercise
-		String actual = String.valueOf(neuronDao.display());
+		String actual = String.valueOf(neuronDao.returnNeuron());
 		
 		// Verify
 		assertThat(actual, is(expected));
@@ -75,7 +75,7 @@ public class NeuronDaoTest {
 		String expected = "[{id=" + id + ", title=" + title + ", content=" + content + "}]";
 		
 		// Exercise
-		neuronDao.update(id, title, content);
+		neuronDao.updateNeuron(id, title, content);
 		String actual = String.valueOf(jdbc.queryForList("SELECT id, title, content FROM neuron WHERE id = ?",id));
 		
 		// Verify
@@ -93,7 +93,7 @@ public class NeuronDaoTest {
 		String expected = "[{title=" + title + ", content=" + content + ", neuron_level=" + neuronLevel + "}]";
 		
 		// Exercise
-		neuronDao.generate(id);
+		neuronDao.generateNeuron(id);
 		String actual = String.valueOf(jdbc.queryForList("SELECT title, content, neuron_level FROM neuron WHERE id = ?", neuronDao.youngestId()));
 		
 		// Verify
@@ -108,7 +108,7 @@ public class NeuronDaoTest {
 		String expected = "[]";
 		
 		// Exercise
-		neuronDao.extinct(id);
+		neuronDao.extinctNeuron(id);
 		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM neuron "
 				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id));
 		
@@ -128,7 +128,7 @@ public class NeuronDaoTest {
 			String expected = "[{title=" + title + ", content=" + content + ", neuron_level=" + neuronLevel + "}]";
 			
 			// Exercise
-			neuronDao.insert(id);
+			neuronDao.insertNeuron(id);
 			String actual = String.valueOf(jdbc.queryForList("SELECT title, content, neuron_level FROM neuron WHERE id = ?", neuronDao.youngestId()));
 			
 			// Verify

@@ -33,32 +33,34 @@ public class MainController {
 
 		// ニューロンの生成＆木構造の生成
 		if (generateFlag != null) {
-			neuronDao.generate(id);
+			neuronDao.generateNeuron(id);
 			
 			treeDiagramDao.generateTreeDiagram(id, neuronDao.youngestId());
 		}
 
 		// ニューロンの削除＆木構造の削除
 		if (id != null && extinctFlag != null) {
-			neuronDao.extinct(id);
+			neuronDao.extinctNeuron(id);
 			
 			treeDiagramDao.extinctTreeDiagram(id);
 		}
 
 		// ニューロンの更新
 		if (id != null && updateFlag != null) {
-			neuronDao.update(id, title, content);
+			neuronDao.updateNeuron(id, title, content);
 		}
 
-		// ニューロンの挿入＆木構造の挿入
+		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
 		if (id != null && insertFlag != null) {
-			neuronDao.insert(id);
+			neuronDao.insertNeuron(id);
 			
 			treeDiagramDao.insertTreeDiagram(id, neuronDao.youngestId());
+			
+			neuronDao.insertNeuronLevel(id);
 		}
 
 		// ニューロンのリストをモデルに代入		
-		model.addAttribute("brainscope", neuronDao.display());
+		model.addAttribute("brainscope", neuronDao.returnNeuron());
 
 		return "brainscope";
 	}

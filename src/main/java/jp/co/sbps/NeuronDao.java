@@ -23,8 +23,8 @@ public class NeuronDao {
 	@Autowired
 	TreeDiagramDao treeDiagramDao;
 
-	// ニューロンのリストを返す
-	public List<Map<String, Object>> display() {
+	// ニューロンを返す
+	public List<Map<String, Object>> returnNeuron() {
 		return jdbc.queryForList("SELECT * FROM neuron "
 				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?) "
 				+ "AND (neuron_level BETWEEN ? AND ? + 1) ORDER BY neuron_level ASC",
@@ -32,12 +32,12 @@ public class NeuronDao {
 	}
 
 	// ニューロンの更新
-	public void update(Integer id, String title, String content) {
+	public void updateNeuron(Integer id, String title, String content) {
 		jdbc.update("UPDATE neuron SET title = ?, content = ?, update_date = current_timestamp WHERE id = ?", title, content, id);
 	}
 
 	// ニューロンの生成
-	public void generate(Integer id) {
+	public void generateNeuron(Integer id) {
 		// 生成時の初期タイトル・コンテンツ
 		String newTitle = "新しいニューロン";
 		String newContent = "";
@@ -54,12 +54,12 @@ public class NeuronDao {
 	}
 
 	// ニューロンの削除
-	public void extinct(Integer id) {
+	public void extinctNeuron(Integer id) {
 		jdbc.update("DELETE FROM neuron WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id);
 	}
 
 	// ニューロンの挿入
-	public void insert(Integer id) {
+	public void insertNeuron(Integer id) {
 		// 挿入時の初期タイトル・コンテンツ
 		String newTitle = "挿入されたニューロン";
 		String newContent = "";
@@ -73,12 +73,14 @@ public class NeuronDao {
 				+ "current_timestamp,"
 				+ "current_timestamp)",
 				newTitle, newContent, neuronLevel(id));
-		
-		// ニューロンの深さの調整
+	}
+	
+	// ニューロンレベルの調整
+	public void insertNeuronLevel(Integer id) {
 		jdbc.update("UPDATE neuron SET neuron_level = neuron_level + 1 WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id);
 	}
 	
-	// ニューロンの深さ
+	// ニューロンレベル
 	public Integer neuronLevel(Integer id) {
 		return jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, id);
 	}
