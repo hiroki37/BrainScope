@@ -85,7 +85,7 @@ public class NeuronDao {
 		return jdbc.queryForObject("SELECT neuron_level FROM neuron WHERE id = ?", Integer.class, id);
 	}
 	
-	// 親のid
+	// 親ニューロンのid
 	public Integer parentId(Integer id) {
 		return jdbc.queryForObject("SELECT id FROM neuron "
 				+ "WHERE id IN (SELECT ancestor FROM tree_diagram WHERE descendant = ?) "

@@ -54,7 +54,7 @@ public class MainController {
 		if (id != null && insertFlag != null) {
 			neuronDao.insertNeuron(id);
 			
-			treeDiagramDao.insertTreeDiagram(id, neuronDao.youngestId());
+			treeDiagramDao.insertTreeDiagram(id, neuronDao.parentId(id), neuronDao.youngestId());
 			
 			neuronDao.insertNeuronLevel(id);
 		}

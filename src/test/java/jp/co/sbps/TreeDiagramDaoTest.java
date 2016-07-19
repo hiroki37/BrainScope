@@ -80,24 +80,27 @@ public class TreeDiagramDaoTest {
 		// Exercise
 		treeDiagramDao.extinctTreeDiagram(id);
 		
-		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE descendant IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id));
+		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram "
+				+ "WHERE descendant IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id));
 		
 		// Verify
 		assertThat(actual, is(expected));
 	}
 	
-	// @Test
+	@Test
 	public void insertTreeDiagram_木構造が適切に挿入されていることを確認する() {
 		// SetUp
 		Integer id = 4;
+		Integer parentId = 2;
 		Integer youngestId = 5;
 		
-		String expected = "";
+		String expected = "[{ancestor=4, descendant=4}, {ancestor=5, descendant=5}, {ancestor=5, descendant=4}]";
 		
 		// Exercise
-		treeDiagramDao.insertTreeDiagram(id, youngestId);
+		treeDiagramDao.insertTreeDiagram(id, parentId, youngestId);
 		
-		String actual = String.valueOf(jdbc.queryForList(""));
+		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram "
+				+ "WHERE ancestor IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", youngestId));
 		
 		// Verify
 		assertThat(actual, is(expected));

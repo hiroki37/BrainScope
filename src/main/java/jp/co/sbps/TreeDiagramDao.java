@@ -30,8 +30,8 @@ public class TreeDiagramDao {
 	}
 	
 	// 木構造の挿入
-	public void insertTreeDiagram(Integer id, Integer youngestId) {
-		generateTreeDiagram(neuronDao.parentId(id), youngestId);
+	public void insertTreeDiagram(Integer id, Integer parentId, Integer youngestId) {
+		generateTreeDiagram(parentId, youngestId);
 		jdbc.update("INSERT INTO tree_diagram (ancestor, descendant) "
 				+ "(SELECT ?, descendant FROM tree_diagram WHERE ancestor = ?)", youngestId, id);
 	}
