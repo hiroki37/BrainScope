@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 public class TreeDiagramDao {
 	
 	@Autowired
-	private NeuronDao neuronDao;
-	
-	@Autowired
 	private JdbcTemplate jdbc;
 	
 	// 木構造の生成
