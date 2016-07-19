@@ -10,6 +10,9 @@ public class MainController {
 
 	@Autowired
 	NeuronDao neuronDao;
+	
+	@Autowired
+	TreeDiagramDao treeDiagramDao;
 
 	@Autowired
 	ConfigDao configDao;
@@ -28,14 +31,18 @@ public class MainController {
 			configDao.moveDown(id);
 		}
 
-		// ニューロンの生成
+		// ニューロンの生成＆木構造の生成
 		if (generateFlag != null) {
 			neuronDao.generate(id);
+			
+			treeDiagramDao.generateTreeDiagram(id, neuronDao.youngestId());
 		}
 
-		// ニューロンの削除
+		// ニューロンの削除＆木構造の削除
 		if (id != null && extinctFlag != null) {
 			neuronDao.extinct(id);
+			
+			treeDiagramDao.extinctTreeDiagram(id);
 		}
 
 		// ニューロンの更新
@@ -43,16 +50,16 @@ public class MainController {
 			neuronDao.update(id, title, content);
 		}
 
-		// ニューロンの挿入
+		// ニューロンの挿入＆木構造の挿入
 		if (id != null && insertFlag != null) {
 			neuronDao.insert(id);
+			
+			treeDiagramDao.insertTreeDiagram(id, neuronDao.youngestId());
 		}
 
-		// 木構造をモデルに代入		
+		// ニューロンのリストをモデルに代入		
 		model.addAttribute("brainscope", neuronDao.display());
 
 		return "brainscope";
 	}
 }
-
-// テスト編集
