@@ -31,10 +31,10 @@ public class NeuronDaoTest {
 	public void setup() {
 		// neuronテーブルの初期化
 		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 3, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 3, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, false, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, false, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 3, false, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 3, false, '2016-04-01', '2016-04-01')");
 		
 		// tree_diagramテーブルの初期化
 		jdbc.update("INSERT INTO tree_diagram VALUES (1, 1)");
@@ -55,11 +55,26 @@ public class NeuronDaoTest {
 	@Test
 	public void returnNeuron_現在のスコープアドレスのニューロンとそれより１つ深いニューロンのすべてを返すことを確認する() {
 		// SetUp
-		String expected = "[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, create_date=2016-04-01, update_date=2016-04-01}, "
-				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, create_date=2016-04-01, update_date=2016-04-01}]";
+		String expected = "[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
+				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}]";
 		
 		// Exercise
 		String actual = String.valueOf(neuronDao.returnNeuron());
+		
+		// Verify
+		assertThat(actual, is(expected));
+	}
+	
+	@Test
+	public void returnAllNeuron_すべてのニューロンを返すことを確かめる() {
+		// SetUp
+		String expected = "[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
+				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
+				+ "{id=3, title=ニューロン３, content=コンテンツ３, neuron_level=3, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
+				+ "{id=4, title=ニューロン４, content=コンテンツ４, neuron_level=3, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}]";
+		
+		// Exercise
+		String actual = String.valueOf(neuronDao.returnAllNeuron());
 		
 		// Verify
 		assertThat(actual, is(expected));
@@ -135,32 +150,31 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void insertNeuronLevel_ニューロンレベルが調整されることを確認する() {
+	public void activateNeuron_ニューロンが活性化されることを確認する() {
 		// SetUp
-		Integer id = 2;
-		Integer id2NeuronLevel = 3;
-		Integer id3NeuronLevel = 4;
-		Integer id4NeuronLevel = 4;
+		Integer id = 1;
 		
-		String expected = "[{neuron_level=" + id2NeuronLevel + "}, {neuron_level=" + id3NeuronLevel + "}, {neuron_level=" + id4NeuronLevel + "}]";
+		Boolean expected = true;
 		
 		// Exercise
-		neuronDao.insertNeuronLevel(id);
-		String actual = String.valueOf(jdbc.queryForList("SELECT neuron_level FROM neuron WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id));
+		neuronDao.activateNeuron(id);
+		Boolean actual = jdbc.queryForObject("SELECT active FROM neuron WHERE id = ?", Boolean.class, id);
 		
 		// Verify
 		assertThat(actual, is(expected));
 	}
 	
 	@Test
-	public void neuronLevel_ニューロンレベルが出力されることを確認する() {
+	public void activateNeuron_ニューロンが非活性化されることを確認する() {
 		// SetUp
 		Integer id = 1;
+		jdbc.update("UPDATE neuron SET active = true");
 		
-		Integer expected = 1;
-				
+		Boolean expected = false;
+		
 		// Exercise
-		Integer actual = neuronDao.neuronLevel(id);
+		neuronDao.activateNeuron(id);
+		Boolean actual = jdbc.queryForObject("SELECT active FROM neuron WHERE id = ?", Boolean.class, id);
 		
 		// Verify
 		assertThat(actual, is(expected));
@@ -187,6 +201,38 @@ public class NeuronDaoTest {
 		
 		// Exercise
 		Integer actual = neuronDao.youngestId();
+		
+		// Verify
+		assertThat(actual, is(expected));
+	}
+	
+	@Test
+	public void insertNeuronLevel_ニューロンレベルが調整されることを確認する() {
+		// SetUp
+		Integer id = 2;
+		Integer id2NeuronLevel = 3;
+		Integer id3NeuronLevel = 4;
+		Integer id4NeuronLevel = 4;
+		
+		String expected = "[{neuron_level=" + id2NeuronLevel + "}, {neuron_level=" + id3NeuronLevel + "}, {neuron_level=" + id4NeuronLevel + "}]";
+		
+		// Exercise
+		neuronDao.insertNeuronLevel(id);
+		String actual = String.valueOf(jdbc.queryForList("SELECT neuron_level FROM neuron WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id));
+		
+		// Verify
+		assertThat(actual, is(expected));
+	}
+	
+	@Test
+	public void neuronLevel_ニューロンレベルが出力されることを確認する() {
+		// SetUp
+		Integer id = 1;
+		
+		Integer expected = 1;
+				
+		// Exercise
+		Integer actual = neuronDao.neuronLevel(id);
 		
 		// Verify
 		assertThat(actual, is(expected));

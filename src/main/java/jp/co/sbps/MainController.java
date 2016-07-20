@@ -1,5 +1,7 @@
 package jp.co.sbps;
 
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,43 +15,46 @@ public class MainController {
 	
 	@Autowired
 	TreeDiagramDao treeDiagramDao;
-
+	
 	@Autowired
 	ConfigDao configDao;
 	
+	/** logger **/
+	// private final static Logger log = LoggerFactory.getLogger(MainController.class);
+	
 	@RequestMapping("brainscope")
-	public String brainscope(Integer id, String title, String content, String moveUpFlag, String moveDownFlag,
-			String updateFlag, String generateFlag, String extinctFlag, String insertFlag, Model model) {
-
+	public String brainScope(Integer id, String title, String content, String moveUpFlag, String moveDownFlag,
+			String updateFlag, String generateFlag, String extinctFlag, String insertFlag, String activateFlag, Model model) {
+		
 		// スコープアドレスの移動（上り）
 		if (id != null && neuronDao.neuronLevel(id) - 1 > 0 && moveUpFlag != null) {
 			configDao.moveUp(id);
 		}
-
+		
 		// スコープアドレスの移動（下り）
 		if (id != null && moveDownFlag != null) {
 			configDao.moveDown(id);
 		}
-
+		
 		// ニューロンの生成＆木構造の生成
 		if (generateFlag != null) {
 			neuronDao.generateNeuron(id);
 			
 			treeDiagramDao.generateTreeDiagram(id, neuronDao.youngestId());
 		}
-
+		
 		// ニューロンの削除＆木構造の削除
 		if (id != null && extinctFlag != null) {
 			neuronDao.extinctNeuron(id);
 			
 			treeDiagramDao.extinctTreeDiagram(id);
 		}
-
+		
 		// ニューロンの更新
 		if (id != null && updateFlag != null) {
 			neuronDao.updateNeuron(id, title, content);
 		}
-
+		
 		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
 		if (id != null && insertFlag != null) {
 			neuronDao.insertNeuron(id);
@@ -58,10 +63,33 @@ public class MainController {
 			
 			neuronDao.insertNeuronLevel(id);
 		}
-
-		// ニューロンのリストをモデルに代入		
-		model.addAttribute("brainscope", neuronDao.returnNeuron());
-
+		
+		// ニューロンの活性化
+		if (id != null && activateFlag != null) {
+			neuronDao.activateNeuron(id);
+		}
+		
+		// ニューロンのリストをモデルに代入
+		model.addAttribute("neuron", neuronDao.returnNeuron());
+		
+		// log.info();
+		
 		return "brainscope";
+	}
+	
+	@RequestMapping("synapse")
+	public String synapse(Integer id, String activateFlag, Model model) {
+		
+		// ニューロンの活性化
+		if (id != null && activateFlag != null) {
+			neuronDao.activateNeuron(id);
+		}
+		
+		// すべてのニューロンのリストをモデルに代入		
+		model.addAttribute("neuron", neuronDao.returnAllNeuron());
+		
+		// log.info();
+		
+		return "synapse";
 	}
 }

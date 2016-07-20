@@ -27,7 +27,7 @@ public class ConfigDao {
 		jdbc.update("UPDATE config SET scope_address = ?", id);
 	}
 	
-	//現在のスコープアドレス
+	//現在のスコープアドレスを返す
 	public Integer scopeAddress() { 
 		return jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
 	}

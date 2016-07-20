@@ -31,10 +31,10 @@ public class ConfigDaoTest {
 	public void setup() {
 		// neuronテーブルの初期化
 		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 3, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 3, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, false, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, false, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 3, false, '2016-04-01', '2016-04-01')");
+		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 3, false, '2016-04-01', '2016-04-01')");
 		
 		// tree_diagramテーブルの初期化
 		jdbc.update("INSERT INTO tree_diagram VALUES (1, 1)");
