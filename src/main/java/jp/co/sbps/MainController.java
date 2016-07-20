@@ -7,6 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jp.co.sbps.dao.ConfigDao;
+import jp.co.sbps.dao.NeuronDao;
+import jp.co.sbps.dao.TreeDiagramDao;
+import jp.co.sbps.form.BrainScopeForm;
+
 @Controller
 public class MainController {
 
@@ -23,50 +28,49 @@ public class MainController {
 	// private final static Logger log = LoggerFactory.getLogger(MainController.class);
 	
 	@RequestMapping("brainscope")
-	public String brainScope(Integer id, String title, String content, String moveUpFlag, String moveDownFlag,
-			String updateFlag, String generateFlag, String extinctFlag, String insertFlag, String activateFlag, Model model) {
+	public String brainScope(BrainScopeForm brainScopeForm , Model model) {
 		
 		// スコープアドレスの移動（上り）
-		if (id != null && neuronDao.neuronLevel(id) - 1 > 0 && moveUpFlag != null) {
-			configDao.moveUp(id);
+		if (brainScopeForm.getId() != null && neuronDao.neuronLevel(brainScopeForm.getId()) - 1 > 0 && brainScopeForm.getMoveUpFlag() != null) {
+			configDao.moveUp(brainScopeForm.getId());
 		}
 		
 		// スコープアドレスの移動（下り）
-		if (id != null && moveDownFlag != null) {
-			configDao.moveDown(id);
+		if (brainScopeForm.getId() != null && brainScopeForm.getMoveDownFlag() != null) {
+			configDao.moveDown(brainScopeForm.getId());
 		}
 		
 		// ニューロンの生成＆木構造の生成
-		if (generateFlag != null) {
-			neuronDao.generateNeuron(id);
+		if (brainScopeForm.getGenerateFlag() != null) {
+			neuronDao.generateNeuron(brainScopeForm.getId());
 			
-			treeDiagramDao.generateTreeDiagram(id, neuronDao.youngestId());
+			treeDiagramDao.generateTreeDiagram(brainScopeForm.getId(), neuronDao.youngestId());
 		}
 		
 		// ニューロンの削除＆木構造の削除
-		if (id != null && extinctFlag != null) {
-			neuronDao.extinctNeuron(id);
+		if (brainScopeForm.getId() != null && brainScopeForm.getExtinctFlag() != null) {
+			neuronDao.extinctNeuron(brainScopeForm.getId());
 			
-			treeDiagramDao.extinctTreeDiagram(id);
+			treeDiagramDao.extinctTreeDiagram(brainScopeForm.getId());
 		}
 		
 		// ニューロンの更新
-		if (id != null && updateFlag != null) {
-			neuronDao.updateNeuron(id, title, content);
+		if (brainScopeForm.getId() != null && brainScopeForm.getUpdateFlag() != null) {
+			neuronDao.updateNeuron(brainScopeForm.getId(), brainScopeForm.getTitle(), brainScopeForm.getContent());
 		}
 		
 		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
-		if (id != null && insertFlag != null) {
-			neuronDao.insertNeuron(id);
+		if (brainScopeForm.getId() != null && brainScopeForm.getInsertFlag() != null) {
+			neuronDao.insertNeuron(brainScopeForm.getId());
 			
-			treeDiagramDao.insertTreeDiagram(id, neuronDao.parentId(id), neuronDao.youngestId());
+			treeDiagramDao.insertTreeDiagram(brainScopeForm.getId(), neuronDao.parentId(brainScopeForm.getId()), neuronDao.youngestId());
 			
-			neuronDao.insertNeuronLevel(id);
+			neuronDao.insertNeuronLevel(brainScopeForm.getId());
 		}
 		
 		// ニューロンの活性化
-		if (id != null && activateFlag != null) {
-			neuronDao.activateNeuron(id);
+		if (brainScopeForm.getId() != null && brainScopeForm.getActivateFlag() != null) {
+			neuronDao.activateNeuron(brainScopeForm.getId());
 		}
 		
 		// ニューロンのリストをモデルに代入

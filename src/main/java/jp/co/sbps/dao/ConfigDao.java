@@ -1,4 +1,4 @@
-package jp.co.sbps;
+package jp.co.sbps.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

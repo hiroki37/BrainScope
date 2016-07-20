@@ -1,4 +1,4 @@
-package jp.co.sbps;
+package jp.co.sbps.dao;
 
 import java.util.List;
 import java.util.Map;
