@@ -29,21 +29,21 @@
 				<tr>
 					<td>
 						<!-- スコープアドレスの移動（上り） -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="moveUpFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
 							<button class="btn btn-sm" type="submit" title="戻る"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの生成 -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="generateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
 							<button class="btn btn-sm" type="submit" title="ニューロンを生成"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの活性化 -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="activateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
@@ -55,7 +55,7 @@
 							</span>
 						</form>
 						<!-- ニューロンの更新 -->
-						<form method="post" action="brainscope">
+						<form method="post" th:action="@{brainscope}">
 							<input type="hidden" name="updateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
@@ -87,28 +87,28 @@
 				<tr th:each="neuron, iterStat : ${neuron}" th:class="${iterStat.first} ? 'display'">
 					<td>
 						<!-- スコープアドレスの移動（下り） -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="moveDownFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<button class="btn btn-sm" type="submit" title="進む"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの削除 -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="extinctFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<button class="btn btn-sm" type="submit" title="ニューロンを削除"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの挿入 -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="insertFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<button class="btn btn-sm" type="submit" title="ニューロンを挿入"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの活性化 -->
-						<form class="inline" method="post" action="brainscope">
+						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="activateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.id}" />
 							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
@@ -120,7 +120,7 @@
 							</span>
 						</form>
 						<!-- ニューロンの更新 -->
-						<form method="post" action="brainscope">
+						<form method="post" th:action="@{brainscope}">
 							<input type="hidden" name="updateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.id}" />
 							<table class="width-100per">

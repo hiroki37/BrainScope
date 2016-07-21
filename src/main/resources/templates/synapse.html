@@ -47,7 +47,7 @@
 						</td>
 						<td class="col-xs-2">
 							<!-- ニューロンの活性化 -->
-							<form class="inline" method="post" action="synapse">
+							<form class="inline" method="post" th:action="@{synapse}">
 								<input type="hidden" name="activateFlag" value="1" />
 								<input type="hidden" name="id" th:value="${neuron.id}" />
 								<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
@@ -59,7 +59,7 @@
 								</span>
 							</form>
 							<!-- ニューロンへ遷移 -->
-							<form class="inline" method="post" action="brainscope">
+							<form class="inline" method="post" th:action="@{brainscope}">
 								<input type="hidden" name="moveDownFlag" value="1" />
 								<input type="hidden" name="id" th:value="${neuron.id}" />
 								<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
