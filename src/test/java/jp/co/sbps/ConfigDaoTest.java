@@ -1,7 +1,8 @@
+/*
 package jp.co.sbps;
 
-//import static org.hamcrest.Matchers.is;
-//import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 //import org.junit.Test;
@@ -12,19 +13,21 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-//import jp.co.sbps.dao.ConfigDao;
+import jp.co.sbps.dao.ConfigDao;
+*/
 
 /*
  * ConfigDaoが適切に動作しているかを確認するプログラム
  */
 
+/*
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BrainScopeApplication.class)
 @Transactional
 public class ConfigDaoTest {
 	
-	// @Autowired
-	// private ConfigDao configDao;
+	@Autowired
+	private ConfigDao configDao;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -54,7 +57,6 @@ public class ConfigDaoTest {
 		jdbc.update("INSERT INTO config VALUES (1, 2)");
 	}
 	
-	/*
 	// @Test
 	public void moveUp_スコープアドレスが適切に移動していることを確認する() {
 		// SetUp
@@ -97,6 +99,5 @@ public class ConfigDaoTest {
 		// Verify
 		assertThat(actual, is(expected));
 	}
-	*/
-
 }
+*/

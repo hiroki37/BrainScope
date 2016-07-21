@@ -84,6 +84,4 @@ public class Neuron {
 	public void setUpdateDate(Calendar updateDate) {
 		this.updateDate = updateDate;
 	}
-	
-	
 }

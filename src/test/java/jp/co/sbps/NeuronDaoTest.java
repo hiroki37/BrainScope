@@ -1,10 +1,15 @@
+/*
 package jp.co.sbps;
 
-//import static org.hamcrest.Matchers.is;
-//import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
-//import org.junit.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -12,19 +17,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-//import jp.co.sbps.dao.NeuronDao;
+import jp.co.sbps.dao.NeuronDao;
+import jp.co.sbps.dao.entity.Neuron;
+*/
 
 /*
  * NeuronDaoが適切に動作しているかを確認するプログラム
  */
 
+/*
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BrainScopeApplication.class)
 @Transactional
 public class NeuronDaoTest {
 	
-	// @Autowired
-	// private NeuronDao neuronDao;
+	@Autowired
+	private NeuronDao neuronDao;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -54,33 +62,70 @@ public class NeuronDaoTest {
 		jdbc.update("INSERT INTO config VALUES (1, 2)");
 	}
 	
-	/*
-	// @Test
-	public void returnNeuron_現在のスコープアドレスのニューロンとそれより１つ深いニューロンのすべてを返すことを確認する() {
+	@Test
+	public void returnNeuronList_現在のスコープアドレスのニューロンとそれより１つ深いニューロンのすべてを返すことを確認する() {
 		// SetUp
-		String expected = "[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
-				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}]";
+		Integer id1 = 1, id2 = 2;
+		String title1 = "ニューロン１", title2 = "ニューロン２";
+		String content1 = "コンテンツ１", content2 = "コンテンツ２";
+		Integer neuronLevel1 = 1, neuronLevel2 = 2;
+		Boolean active = false;
+		// Date createDate = "2016-04-01 00:00:00.0";
+		// Date updateDate = "2016-04-01 00:00:00.0";
 		
 		// Exercise
-		String actual = String.valueOf(neuronDao.returnNeuron());
+		List<Neuron> actual = neuronDao.returnNeuronList();
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(actual.get(0).getId(), is(id1));
+		assertThat(actual.get(0).getTitle(), is(title1));
+		assertThat(actual.get(1).getTitle(), is(title2));
+		assertThat(actual.get(0).getContent(), is(content1));
+		assertThat(actual.get(1).getContent(), is(content2));
+		assertThat(actual.get(0).getNeuronLevel(), is(neuronLevel1));
+		assertThat(actual.get(1).getNeuronLevel(), is(neuronLevel2));
+		
+		assertThat(actual.get(1).getId(), is(id2));
+		
+		assertThat(actual.get(0).getActive(), is(active));
+		// assertThat(actual.get(0).getCreateDate(), is(createDate));
+		// assertThat(actual.get(0).getUpdateDate(), is(updateDate));
 	}
 	
-	// @Test
+	@Test
 	public void returnAllNeuron_すべてのニューロンを返すことを確かめる() {
 		// SetUp
-		String expected = "[{id=1, title=ニューロン１, content=コンテンツ１, neuron_level=1, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
-				+ "{id=2, title=ニューロン２, content=コンテンツ２, neuron_level=2, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
-				+ "{id=3, title=ニューロン３, content=コンテンツ３, neuron_level=3, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}, "
-				+ "{id=4, title=ニューロン４, content=コンテンツ４, neuron_level=3, active=false, create_date=2016-04-01 00:00:00.0, update_date=2016-04-01 00:00:00.0}]";
+		Integer id1 = 1, id2 = 2, id3 = 3, id4 = 4;
+		String title1 = "ニューロン１", title2 = "ニューロン２", title3 = "ニューロン３", title4 = "ニューロン４";
+		String content1 = "コンテンツ１", content2 = "コンテンツ２", content3 = "コンテンツ３", content4 = "コンテンツ４";
+		Integer neuronLevel1 = 1, neuronLevel2 = 2, neuronLevel3 = 3, neuronLevel4 = 3;
+		Boolean active = false;
+		// Date createDate = "2016-04-01 00:00:00.0";
+		// Date updateDate = "2016-04-01 00:00:00.0";
 		
 		// Exercise
-		String actual = String.valueOf(neuronDao.returnAllNeuron());
+		List<Neuron> actual = neuronDao.returnAllNeuronList();
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(actual.get(0).getId(), is(id1));
+		assertThat(actual.get(1).getId(), is(id2));
+		assertThat(actual.get(2).getId(), is(id3));
+		assertThat(actual.get(3).getId(), is(id4));
+		assertThat(actual.get(0).getTitle(), is(title1));
+		assertThat(actual.get(1).getTitle(), is(title2));
+		assertThat(actual.get(2).getTitle(), is(title3));
+		assertThat(actual.get(3).getTitle(), is(title4));
+		assertThat(actual.get(0).getContent(), is(content1));
+		assertThat(actual.get(1).getContent(), is(content2));
+		assertThat(actual.get(2).getContent(), is(content3));
+		assertThat(actual.get(3).getContent(), is(content4));
+		assertThat(actual.get(0).getNeuronLevel(), is(neuronLevel1));
+		assertThat(actual.get(1).getNeuronLevel(), is(neuronLevel2));
+		assertThat(actual.get(2).getNeuronLevel(), is(neuronLevel3));
+		assertThat(actual.get(3).getNeuronLevel(), is(neuronLevel4));
+		assertThat(actual.get(0).getActive(), is(active));
+		// assertThat(actual.get(0).getCreateDate(), is(createDate));
+		// assertThat(actual.get(0).getUpdateDate(), is(updateDate));
 	}
 	
 	// @Test
@@ -240,5 +285,5 @@ public class NeuronDaoTest {
 		// Verify
 		assertThat(actual, is(expected));
 	}
-	*/
 }
+*/

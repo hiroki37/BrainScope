@@ -1,15 +1,18 @@
+/*
 package jp.co.sbps;
 
-// import static org.hamcrest.Matchers.is;
-// import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
+*/
 
 /*
  * TreeDiagramDaoが適切に動作しているかを確認するプログラム
  */
 
-// import org.junit.Test;
+/*
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -17,15 +20,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-// import jp.co.sbps.dao.TreeDiagramDao;
+import jp.co.sbps.dao.TreeDiagramDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BrainScopeApplication.class)
 @Transactional
 public class TreeDiagramDaoTest {
 	
-	// @Autowired
-	// private TreeDiagramDao treeDiagramDao;
+	@Autowired
+	private TreeDiagramDao treeDiagramDao;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -55,7 +58,6 @@ public class TreeDiagramDaoTest {
 		jdbc.update("INSERT INTO config VALUES (1, 2)");
 	}
 	
-	/*
 	// @Test
 	public void generateTreeDiagram_木構造が適切に生成されていることを確認する() {
 		// SetUp
@@ -108,5 +110,5 @@ public class TreeDiagramDaoTest {
 		// Verify
 		assertThat(actual, is(expected));
 	}
-	*/
 }
+*/
