@@ -4,8 +4,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>BrainScope</title>
-	<link rel="stylesheet" href="./css/default.css" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+	<link rel="stylesheet" th:href="./css/default.css" />
+	<link rel="stylesheet" th:href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 	
 </head>
 
@@ -15,12 +15,12 @@
 	
 		<ul class="nav nav-tabs navbar-fixed-top" style="background-color: #ffffff">
 			<li role="presentation">
-				<a href="brainscope">
+				<a th:href="@{brainscope}">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> BrainScope
 				</a>
 			</li>
 			<li role="presentation" class="active">
-				<a href="">
+				<a th:href="@{}">
 					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Synapse
 				</a>
 			</li>
@@ -39,11 +39,11 @@
 					<tr th:each="neuron : ${neuron}" th:class="${!(neuron.active)} ? 'display'">
 						<!-- ニューロンレベル -->
 						<td class="col-xs-3">
-							<input class="form-control input-sm" th:value="${neuron.neuronLevel}" />
+							<input class="form-control input-lg" th:value="${neuron.neuronLevel}" />
 						</td>
 						<!-- タイトル -->
 						<td class="col-xs-5">
-							<input class="form-control input-sm" th:value="${neuron.title}" />
+							<input class="form-control input-lg" th:value="${neuron.title}" />
 						</td>
 						<td class="col-xs-2">
 							<!-- ニューロンの活性化 -->
@@ -52,10 +52,10 @@
 								<input type="hidden" name="id" th:value="${neuron.id}" />
 								<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 								<span th:class="${neuron.active} ? 'display'">
-									<button class="btn btn-sm" type="submit" title="ニューロンを活性化"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
+									<button class="btn btn-lg" type="submit" title="ニューロンを活性化"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
 								</span>
 								<span th:class="${!(neuron.active)} ? 'display'">
-									<button class="btn btn-sm" type="submit" title="ニューロンを非活性化"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+									<button class="btn btn-lg" type="submit" title="ニューロンを非活性化"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
 								</span>
 							</form>
 							<!-- ニューロンへ遷移 -->
@@ -63,7 +63,7 @@
 								<input type="hidden" name="moveDownFlag" value="1" />
 								<input type="hidden" name="id" th:value="${neuron.id}" />
 								<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
-								<button class="btn btn-sm" type="submit" title="ニューロンへ転移"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
+								<button class="btn btn-lg" type="submit" title="ニューロンへ転移"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
 							</form>
 						</td>
 					</tr>

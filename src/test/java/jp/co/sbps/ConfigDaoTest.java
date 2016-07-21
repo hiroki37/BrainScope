@@ -1,26 +1,29 @@
-/*
+
 package jp.co.sbps;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import org.junit.Before;
-//import org.junit.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.sbps.dao.ConfigDao;
-*/
+import jp.co.sbps.dao.entity.Config;
+import jp.co.sbps.dao.entity.Neuron;
 
 /*
  * ConfigDaoが適切に動作しているかを確認するプログラム
  */
 
-/*
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BrainScopeApplication.class)
 @Transactional
@@ -57,47 +60,46 @@ public class ConfigDaoTest {
 		jdbc.update("INSERT INTO config VALUES (1, 2)");
 	}
 	
-	// @Test
-	public void moveUp_スコープアドレスが適切に移動していることを確認する() {
+	@Test
+	public void moveUp_スコープアドレスが移動していることを確認する() {
 		// SetUp
-		Integer id = 2;
-		jdbc.update("UPDATE config SET scope_address=?", id);
-		
-		Integer expected = 1;
+		Neuron setup = new Neuron();
+		setup.setId(2);
+		setup.setNeuronLevel(2);
 		
 		// Exercise
-		configDao.moveUp(id);
-		Integer actual = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
+		configDao.moveUp(setup);
+		List<Config> config = jdbc.query("SELECT * FROM config",
+				new BeanPropertyRowMapper<>(Config.class));
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(config.get(0).getScopeAddress(), is(1));
 	}
 	
-	// @Test
-	public void moveDown_スコープアドレスが適切に移動していることを確認する() {
+	@Test
+	public void moveDown_スコープアドレスが移動していることを確認する() {
 		// SetUp
-		Integer id = 2;
-		
-		Integer expected = 2;
+		Neuron setup = new Neuron();
+		setup.setId(2);
 		
 		// Exercise
-		configDao.moveDown(id);
-		Integer actual = jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
+		configDao.moveDown(setup);
+		List<Config> config = jdbc.query("SELECT * FROM config",
+				new BeanPropertyRowMapper<>(Config.class));
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(config.get(0).getScopeAddress(), is(2));
 	}
 	
-	// @Test
-	public void scopeAddress_現在のスコープアドレスが正しく取得できることを確認する() {
+	@Test
+	public void returnConfig_コンフィグを返すことを確認する() {
 		// SetUp
-		Integer expected = 1;
 		
 		// Exercise
-		Integer actual = configDao.scopeAddress();
+		Config config = configDao.returnConfig();
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(config.getScopeAddress(), is(1));
+		assertThat(config.getScopeSize(), is(2));
 	}
 }
-*/
