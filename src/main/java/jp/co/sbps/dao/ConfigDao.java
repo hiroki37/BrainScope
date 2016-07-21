@@ -1,8 +1,12 @@
 package jp.co.sbps.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import jp.co.sbps.dao.entity.Config;
+import jp.co.sbps.dao.entity.Neuron;
 
 /*
  * configテーブルへのアクセスをするDaoクラス
@@ -18,17 +22,17 @@ public class ConfigDao {
 	private JdbcTemplate jdbc;
 	
 	// スコープアドレスの移動（上り）
-	public void moveUp(Integer id) {
-		jdbc.update("UPDATE config SET scope_address = ?", neuronDao.parentId(id));
+	public void moveUp(Neuron neuron) {
+		jdbc.update("UPDATE config SET scope_address = ?", neuronDao.parentNeuron(neuron).getId());
 	}
 	
 	// スコープアドレスの移動（下り）
-	public void moveDown(Integer id) {
-		jdbc.update("UPDATE config SET scope_address = ?", id);
+	public void moveDown(Neuron neuron) {
+		jdbc.update("UPDATE config SET scope_address = ?", neuron.getId());
 	}
 	
-	//現在のスコープアドレスを返す
-	public Integer scopeAddress() { 
-		return jdbc.queryForObject("SELECT scope_address FROM config", Integer.class);
+	// コンフィグを返す
+	public Config returnConfig() { 
+		return jdbc.query("SELECT scope_address FROM config", new BeanPropertyRowMapper<>(Config.class)).get(0);
 	}
 }

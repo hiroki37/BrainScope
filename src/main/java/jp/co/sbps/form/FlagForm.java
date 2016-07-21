@@ -1,44 +1,11 @@
 package jp.co.sbps.form;
 
 /*
- * BrainScope機能のフォーム
+ * フラグフォーム
  */
 
-public class BrainScopeForm {
-	
-	// ニューロンID
-	private Integer id;
-	
-	public Integer getId() {
-		return id;
-	}
+public class FlagForm {
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	// ニューロンタイトル
-	private String title;
-	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	// ニューロンコンテンツ
-	private String content;
-	
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
 	// スコープアドレスの移動（上り）フラグ
 	private String moveUpFlag;
 	

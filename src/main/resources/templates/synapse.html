@@ -39,7 +39,7 @@
 					<tr th:each="neuron : ${neuron}" th:class="${!(neuron.active)} ? 'display'">
 						<!-- ニューロンレベル -->
 						<td class="col-xs-3">
-							<input class="form-control input-sm" th:value="${neuron.neuron_level}" />
+							<input class="form-control input-sm" th:value="${neuron.neuronLevel}" />
 						</td>
 						<!-- タイトル -->
 						<td class="col-xs-5">
@@ -50,6 +50,7 @@
 							<form class="inline" method="post" action="synapse">
 								<input type="hidden" name="activateFlag" value="1" />
 								<input type="hidden" name="id" th:value="${neuron.id}" />
+								<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 								<span th:class="${neuron.active} ? 'display'">
 									<button class="btn btn-sm" type="submit" title="ニューロンを活性化"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
 								</span>
@@ -61,6 +62,7 @@
 							<form class="inline" method="post" action="brainscope">
 								<input type="hidden" name="moveDownFlag" value="1" />
 								<input type="hidden" name="id" th:value="${neuron.id}" />
+								<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 								<button class="btn btn-sm" type="submit" title="ニューロンへ転移"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></button>
 							</form>
 						</td>
