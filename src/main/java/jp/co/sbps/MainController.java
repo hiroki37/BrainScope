@@ -71,7 +71,7 @@ public class MainController {
 			configDao.moveUp(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logMoveUp,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getMoveUpFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getMoveUpFlag());
 		}
 		
 		// スコープアドレスの移動（下り）
@@ -80,7 +80,7 @@ public class MainController {
 			configDao.moveDown(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logMoveDown,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getMoveDownFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getMoveDownFlag());
 		}
 		
 		// ニューロンの生成＆木構造の生成
@@ -89,13 +89,13 @@ public class MainController {
 			neuronDao.generateNeuron(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logGenerateNeuron,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getGenerateFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 			
 			start = System.currentTimeMillis();
 			treeDiagramDao.generateTreeDiagram(neuron, neuronDao.youngestNeuron());
 			end = System.currentTimeMillis();
 			log.info(logGenerateTree,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getGenerateFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 		}
 		
 		// ニューロンの削除＆木構造の削除
@@ -104,13 +104,13 @@ public class MainController {
 			neuronDao.extinctNeuron(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logExtinctNeuron,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getExtinctFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 			
 			start = System.currentTimeMillis();
 			treeDiagramDao.extinctTreeDiagram(neuron);
 			end = System.currentTimeMillis();
 			log.info(logExtinctTree,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getExtinctFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 		}
 		
 		// ニューロンの更新
@@ -119,7 +119,7 @@ public class MainController {
 			neuronDao.updateNeuron(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logUpdate,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getUpdateFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getUpdateFlag());
 		}
 		
 		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
@@ -128,19 +128,19 @@ public class MainController {
 			neuronDao.insertNeuron(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logInsertNeuron,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getInsertFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			
 			start = System.currentTimeMillis();
 			treeDiagramDao.insertTreeDiagram(neuron, neuronDao.youngestNeuron());
 			end = System.currentTimeMillis();
 			log.info(logInsertTree,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getInsertFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			
 			start = System.currentTimeMillis();
 			neuronDao.insertNeuronLevel(neuron);
 			end = System.currentTimeMillis();
 			log.info(logInsertNeuronLevel,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getInsertFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 		}
 		
 		// ニューロンの活性化
@@ -149,7 +149,7 @@ public class MainController {
 			neuronDao.activateNeuron(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logActivate,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getActivateFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getActivateFlag());
 		}
 		
 		// ニューロンのリストをモデルに代入
@@ -174,7 +174,7 @@ public class MainController {
 			neuronDao.activateNeuron(neuron);
 			long end = System.currentTimeMillis();
 			log.info(logActivate,
-					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getActivateFlag());
+					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getActivateFlag());
 		}
 		
 		// すべてのニューロンのリストをモデルに代入
