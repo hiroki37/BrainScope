@@ -1,17 +1,14 @@
-/*
 package jp.co.sbps;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
-*/
 
 /*
  * TreeDiagramDaoが適切に動作しているかを確認するプログラム
  */
 
-/*
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.sbps.dao.TreeDiagramDao;
+import jp.co.sbps.dao.entity.Neuron;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BrainScopeApplication.class)
@@ -58,57 +56,52 @@ public class TreeDiagramDaoTest {
 		jdbc.update("INSERT INTO config VALUES (1, 2)");
 	}
 	
-	// @Test
+	@Test
 	public void generateTreeDiagram_木構造が適切に生成されていることを確認する() {
 		// SetUp
-		Integer id = 1;
-		Integer youngestId = 5;
+		Neuron setup = new Neuron();
+		setup.setId(1);
 		
-		String expected = "[{ancestor=1, descendant=5}, {ancestor=5, descendant=5}]";
+		Neuron youngestSetup = new Neuron();
+		youngestSetup.setId(5);
 		
 		// Exercise
-		treeDiagramDao.generateTreeDiagram(id, youngestId);
-		
-		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE descendant = 5"));
+		treeDiagramDao.generateTreeDiagram(setup, youngestSetup);
+		String treeDiagram = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE descendant = 5"));
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(treeDiagram, is("[{ancestor=1, descendant=5}, {ancestor=5, descendant=5}]"));
 	}
 	
-	// @Test
+	@Test
 	public void extinctTreeDiagram_木構造が適切に削除されていることを確認する() {
 		// SetUp
-		Integer id = 2;
-		
-		String expected = "[]";
+		Neuron setup = new Neuron();
+		setup.setId(2);
 		
 		// Exercise
-		treeDiagramDao.extinctTreeDiagram(id);
-		
-		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram "
-				+ "WHERE descendant IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", id));
+		treeDiagramDao.extinctTreeDiagram(setup);
+		String treeDiagram = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE ancestor = 2"));
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(treeDiagram, is("[]"));
 	}
 	
-	// @Test
+	@Test
 	public void insertTreeDiagram_木構造が適切に挿入されていることを確認する() {
 		// SetUp
-		Integer id = 4;
-		Integer parentId = 2;
-		Integer youngestId = 5;
+		Neuron setup = new Neuron();
+		setup.setId(4);
+		setup.setNeuronLevel(3);
 		
-		String expected = "[{ancestor=4, descendant=4}, {ancestor=5, descendant=5}, {ancestor=5, descendant=4}]";
+		Neuron youngestSetup = new Neuron();
+		youngestSetup.setId(5);
 		
 		// Exercise
-		treeDiagramDao.insertTreeDiagram(id, parentId, youngestId);
-		
-		String actual = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram "
-				+ "WHERE ancestor IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", youngestId));
+		treeDiagramDao.insertTreeDiagram(setup, youngestSetup);
+		String treeDiagram = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE ancestor = 5 OR descendant = 5"));
 		
 		// Verify
-		assertThat(actual, is(expected));
+		assertThat(treeDiagram, is("[{ancestor=1, descendant=5}, {ancestor=2, descendant=5}, {ancestor=5, descendant=5}, {ancestor=5, descendant=4}]"));
 	}
 }
-*/
