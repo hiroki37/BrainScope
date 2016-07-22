@@ -13,7 +13,7 @@
 	<div class="container-fluid">
 		<ul class="nav nav-tabs navbar-fixed-top" style="background-color: #ffffff">
 			<li role="presentation" class="active">
-				<a th:href="@{}">
+				<a href="">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> BrainScope
 				</a>
 			</li>
@@ -123,6 +123,7 @@
 						<form method="post" th:action="@{brainscope}">
 							<input type="hidden" name="updateFlag" value="1" />
 							<input type="hidden" name="id" th:value="${neuron.id}" />
+							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<table class="width-100per">
 								<tr>
 									<td style="padding-top: 5px;">

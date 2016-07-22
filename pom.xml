@@ -8,8 +8,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>BrainScope</name>
-	<description>�Uk�c_���BrainScope</description>
+	<name>BrainScope</name> 
+	<!--  -->
+	<description>
+		</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -75,6 +77,12 @@
 			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
 			<version>2.1.8</version>
 		</dependency>
+		
+		<!-- 認証 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -86,5 +94,4 @@
 		</plugins>
 	</build>
 	
-
 </project>

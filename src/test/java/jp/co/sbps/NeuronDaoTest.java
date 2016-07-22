@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.sbps.dao.NeuronDao;
-import jp.co.sbps.dao.entity.Neuron;
+import jp.co.sbps.entity.Neuron;
 
 /*
  * NeuronDaoが適切に動作しているかを確認するプログラム
@@ -61,7 +61,26 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void returnNeuronList_現在のスコープアドレスのニューロンとそれより１つ深いニューロンのすべてを返すことを確認する() {
+	public void presentNeuron_ニューロンを返すことを確認する() {
+		// Setup
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Integer id = 1;
+		
+		// Exercise
+		Neuron neuron = neuronDao.returnNeuron(id);
+		
+		// Verify
+		assertThat(neuron.getId(), is(1));
+		assertThat(neuron.getTitle(), is("ニューロン１"));
+		assertThat(neuron.getContent(), is("コンテンツ１"));
+		assertThat(neuron.getNeuronLevel(), is(1));
+		assertThat(neuron.getActive(), is(false));
+		assertThat(format.format(neuron.getCreateDate().getTime()), is("2016-04-01 00:00:00"));
+		assertThat(format.format(neuron.getUpdateDate().getTime()), is("2016-04-01 00:00:00"));
+	}
+	
+	@Test
+	public void returnNeuronList_現在のニューロンとそれより１つ深い子ニューロンを返すことを確認する() {
 		// SetUp
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
@@ -87,7 +106,7 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void returnAllNeuron_すべてのニューロンを返すことを確かめる() {
+	public void returnAllNeuronList_すべてのニューロンを返すことを確認する() {
 		// SetUp
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
@@ -245,7 +264,7 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void yougestId_最も新しいニューロンのidが出力されることを確認する() {
+	public void yougestNeuron_最も新しいニューロンが出力されることを確認する() {
 		// SetUp
 		Neuron neuron = new Neuron();
 		

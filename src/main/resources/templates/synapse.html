@@ -4,8 +4,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>BrainScope</title>
-	<link rel="stylesheet" th:href="./css/default.css" />
-	<link rel="stylesheet" th:href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+	<link rel="stylesheet" href="./css/default.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
 	
 </head>
 
@@ -20,7 +20,7 @@
 				</a>
 			</li>
 			<li role="presentation" class="active">
-				<a th:href="@{}">
+				<a href="">
 					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Synapse
 				</a>
 			</li>
@@ -39,11 +39,11 @@
 					<tr th:each="neuron : ${neuron}" th:class="${!(neuron.active)} ? 'display'">
 						<!-- ニューロンレベル -->
 						<td class="col-xs-3">
-							<input class="form-control input-lg" th:value="${neuron.neuronLevel}" />
+							<input readonly="readonly" class="form-control input-lg" th:value="${neuron.neuronLevel}" />
 						</td>
 						<!-- タイトル -->
 						<td class="col-xs-5">
-							<input class="form-control input-lg" th:value="${neuron.title}" />
+							<input readonly="readonly" class="form-control input-lg" th:value="${neuron.title}" />
 						</td>
 						<td class="col-xs-2">
 							<!-- ニューロンの活性化 -->

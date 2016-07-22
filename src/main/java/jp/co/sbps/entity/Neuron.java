@@ -1,4 +1,4 @@
-package jp.co.sbps.dao.entity;
+package jp.co.sbps.entity;
 
 import java.util.Calendar;
 

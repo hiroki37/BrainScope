@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import jp.co.sbps.dao.entity.Neuron;
+import jp.co.sbps.entity.Neuron;
 
 /*
  * tree_diagramテーブルへのアクセスをするDaoクラス

@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import jp.co.sbps.dao.entity.Config;
-import jp.co.sbps.dao.entity.Neuron;
+import jp.co.sbps.entity.Config;
+import jp.co.sbps.entity.Neuron;
 
 /*
  * configテーブルへのアクセスをするDaoクラス

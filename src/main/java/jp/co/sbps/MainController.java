@@ -1,8 +1,9 @@
 package jp.co.sbps;
 
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sbps.dao.ConfigDao;
 import jp.co.sbps.dao.NeuronDao;
 import jp.co.sbps.dao.TreeDiagramDao;
-import jp.co.sbps.dao.entity.Neuron;
+import jp.co.sbps.entity.Neuron;
 import jp.co.sbps.form.FlagForm;
 
 @Controller
@@ -25,66 +26,141 @@ public class MainController {
 	@Autowired
 	ConfigDao configDao;
 	
+	@Value("${log.moveUp}")
+	String logMoveUp;
+	
+	@Value("${log.moveDown}")
+	String logMoveDown;
+	
+	@Value("${log.generateNeuron}")
+	String logGenerateNeuron;
+	
+	@Value("${log.generateTree}")
+	String logGenerateTree;
+	
+	@Value("${log.extinctNeuron}")
+	String logExtinctNeuron;
+	
+	@Value("${log.extinctTree}")
+	String logExtinctTree;
+	
+	@Value("${log.update}")
+	String logUpdate;
+	
+	@Value("${log.insertNeuron}")
+	String logInsertNeuron;
+	
+	@Value("${log.insertTree}")
+	String logInsertTree;
+	
+	@Value("${log.insertNeuronLevel}")
+	String logInsertNeuronLevel;
+	
+	@Value("${log.activate}")
+	String logActivate;
+	
 	/** logger **/
-	// private final static Logger log = LoggerFactory.getLogger(MainController.class);
+	private final static Logger log = LoggerFactory.getLogger(MainController.class);
 	
 	@RequestMapping("brainscope")
 	public String brainScope(Neuron neuron, FlagForm flagForm, Model model) {
 		
-		/*
-		// スコープアドレスの移動（上り）
-		if (neuron.getId() != null && neuronDao.neuronLevel(neuron.getId()) - 1 > 0 && flagForm.getMoveUpFlag() != null) {
-			configDao.moveUp(neuron);
-		}
-		*/
-		
 		// スコープアドレスの移動（上り）
 		if (neuron.getId() != null && neuron.getNeuronLevel() - 1 > 0 && flagForm.getMoveUpFlag() != null) {
+			long start = System.currentTimeMillis();
 			configDao.moveUp(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logMoveUp,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getMoveUpFlag());
 		}
 		
 		// スコープアドレスの移動（下り）
-		if (neuron.getId() != null && flagForm.getMoveDownFlag() != null) {
+		else if (neuron.getId() != null && flagForm.getMoveDownFlag() != null) {
+			long start = System.currentTimeMillis();
 			configDao.moveDown(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logMoveDown,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getMoveDownFlag());
 		}
 		
 		// ニューロンの生成＆木構造の生成
-		if (flagForm.getGenerateFlag() != null) {
+		else if (flagForm.getGenerateFlag() != null) {
+			long start = System.currentTimeMillis();
 			neuronDao.generateNeuron(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logGenerateNeuron,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 			
+			start = System.currentTimeMillis();
 			treeDiagramDao.generateTreeDiagram(neuron, neuronDao.youngestNeuron());
+			end = System.currentTimeMillis();
+			log.info(logGenerateTree,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 		}
 		
 		// ニューロンの削除＆木構造の削除
-		if (neuron.getId() != null && flagForm.getExtinctFlag() != null) {
+		else if (neuron.getId() != null && flagForm.getExtinctFlag() != null) {
+			long start = System.currentTimeMillis();
 			neuronDao.extinctNeuron(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logExtinctNeuron,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 			
+			start = System.currentTimeMillis();
 			treeDiagramDao.extinctTreeDiagram(neuron);
+			end = System.currentTimeMillis();
+			log.info(logExtinctTree,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 		}
 		
 		// ニューロンの更新
-		if (neuron.getId() != null && flagForm.getUpdateFlag() != null) {
+		else if (neuron.getId() != null && flagForm.getUpdateFlag() != null) {
+			long start = System.currentTimeMillis();
 			neuronDao.updateNeuron(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logUpdate,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getUpdateFlag());
 		}
 		
 		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
-		if (neuron.getId() != null && flagForm.getInsertFlag() != null) {
+		else if (neuron.getId() != null && flagForm.getInsertFlag() != null) {
+			long start = System.currentTimeMillis();
 			neuronDao.insertNeuron(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logInsertNeuron,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			
+			start = System.currentTimeMillis();
 			treeDiagramDao.insertTreeDiagram(neuron, neuronDao.youngestNeuron());
+			end = System.currentTimeMillis();
+			log.info(logInsertTree,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			
+			start = System.currentTimeMillis();
 			neuronDao.insertNeuronLevel(neuron);
+			end = System.currentTimeMillis();
+			log.info(logInsertNeuronLevel,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getInsertFlag());
 		}
 		
 		// ニューロンの活性化
-		if (neuron.getId() != null && flagForm.getActivateFlag() != null) {
+		else if (neuron.getId() != null && flagForm.getActivateFlag() != null) {
+			long start = System.currentTimeMillis();
 			neuronDao.activateNeuron(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logActivate,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getActivateFlag());
 		}
 		
 		// ニューロンのリストをモデルに代入
+		long start = System.currentTimeMillis();
 		model.addAttribute("neuron", neuronDao.returnNeuronList());
+		long end = System.currentTimeMillis();
 		
-		// log.info();
+		if (neuron.getId() == null) {
+			log.info("＝＝＝＝＝brainscopeの起動＝＝＝＝＝");
+			log.info("【アクション】ニューロンの表示 | 【経過時間】:{}ms", end-start);
+		}
 		
 		return "brainscope";
 	}
@@ -94,13 +170,22 @@ public class MainController {
 		
 		// ニューロンの活性化
 		if (neuron.getId() != null && flagForm.getActivateFlag() != null) {
+			long start = System.currentTimeMillis();
 			neuronDao.activateNeuron(neuron);
+			long end = System.currentTimeMillis();
+			log.info(logActivate,
+					neuron.getId(), end-start, neuron.getNeuronLevel(), flagForm.getActivateFlag());
 		}
 		
-		// すべてのニューロンのリストをモデルに代入		
+		// すべてのニューロンのリストをモデルに代入
+		long start = System.currentTimeMillis();
 		model.addAttribute("neuron", neuronDao.returnAllNeuronList());
+		long end = System.currentTimeMillis();
 		
-		// log.info();
+		if (neuron.getId() == null) {
+			log.info("＝＝＝＝＝synapseの起動＝＝＝＝＝");
+			log.info("【アクション】ニューロンの表示 | 【経過時間】:{}ms", end-start);
+		}
 		
 		return "synapse";
 	}

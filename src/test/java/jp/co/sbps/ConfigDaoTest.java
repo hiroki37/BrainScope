@@ -17,8 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.sbps.dao.ConfigDao;
-import jp.co.sbps.dao.entity.Config;
-import jp.co.sbps.dao.entity.Neuron;
+import jp.co.sbps.entity.Config;
+import jp.co.sbps.entity.Neuron;
 
 /*
  * ConfigDaoが適切に動作しているかを確認するプログラム

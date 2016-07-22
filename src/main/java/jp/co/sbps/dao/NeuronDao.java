@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import jp.co.sbps.dao.entity.Neuron;
+import jp.co.sbps.entity.Neuron;
 
 /*
  * neuronテーブルへのアクセスをするDaoクラス
@@ -28,9 +28,9 @@ public class NeuronDao {
 	TreeDiagramDao treeDiagramDao;
 	
 	// ニューロンを返す
-	public Neuron returnNeuron(Integer scopeAddress) {
+	public Neuron returnNeuron(Integer id) {
 		return jdbc.query("SELECT * FROM neuron WHERE id = ?",
-				new BeanPropertyRowMapper<>(Neuron.class), scopeAddress).get(0);
+				new BeanPropertyRowMapper<>(Neuron.class), id).get(0);
 	}
 	
 	// ニューロンのリストを返す
