@@ -3,12 +3,10 @@ package jp.co.sbps;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,35 +19,7 @@ import jp.co.sbps.form.FlagForm;
 public class MainControllerTest {
 	
 	@Autowired
-	private JdbcTemplate jdbc;
-	
-	@Autowired
 	private MainController mainController;
-	
-	@Before
-	public void setup() {
-		// neuronテーブルの初期化
-		jdbc.update("DELETE FROM neuron");
-		jdbc.update("INSERT INTO neuron VALUES (1, 'ニューロン１', 'コンテンツ１', 1, false, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (2, 'ニューロン２', 'コンテンツ２', 2, false, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (3, 'ニューロン３', 'コンテンツ３', 3, false, '2016-04-01', '2016-04-01')");
-		jdbc.update("INSERT INTO neuron VALUES (4, 'ニューロン４', 'コンテンツ４', 3, false, '2016-04-01', '2016-04-01')");
-		
-		// tree_diagramテーブルの初期化
-		jdbc.update("INSERT INTO tree_diagram VALUES (1, 1)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (1, 2)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (1, 3)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (1, 4)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (2, 2)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (2, 3)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (2, 4)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (3, 3)");
-		jdbc.update("INSERT INTO tree_diagram VALUES (4, 4)");
-		
-		// configテーブルの初期化
-		jdbc.update("DELETE FROM config");
-		jdbc.update("INSERT INTO config VALUES (1, 2)");
-	}
 	
 	// 条件節のテストのみ実装
 	
