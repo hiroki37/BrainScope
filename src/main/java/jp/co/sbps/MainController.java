@@ -80,7 +80,7 @@ public class MainController {
 	public String brainScope(Neuron neuron, FlagForm flagForm, Model model) {
 		
 		// スコープアドレスの移動（上り）
-		if (neuron.getId() != null && neuron.getNeuronLevel() - 1 > 0 && flagForm.getMoveUpFlag() != null) {
+		if (isMoveUp(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			configDao.moveUp(neuron);
 			long end = System.currentTimeMillis();
@@ -89,7 +89,7 @@ public class MainController {
 		}
 		
 		// スコープアドレスの移動（下り）
-		else if (neuron.getId() != null && flagForm.getMoveDownFlag() != null) {
+		else if (isMoveDown(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			configDao.moveDown(neuron);
 			long end = System.currentTimeMillis();
@@ -98,7 +98,7 @@ public class MainController {
 		}
 		
 		// ニューロンの生成＆木構造の生成
-		else if (flagForm.getGenerateFlag() != null) {
+		else if (isGenerate(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			neuronDao.generateNeuron(neuron);
 			long end = System.currentTimeMillis();
@@ -113,7 +113,7 @@ public class MainController {
 		}
 		
 		// ニューロンの削除＆木構造の削除
-		else if (neuron.getId() != null && flagForm.getExtinctFlag() != null) {
+		else if (isExtinct(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			neuronDao.extinctNeuron(neuron);
 			long end = System.currentTimeMillis();
@@ -128,7 +128,7 @@ public class MainController {
 		}
 		
 		// ニューロンの更新
-		else if (neuron.getId() != null && flagForm.getUpdateFlag() != null) {
+		else if (isUpdate(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			neuronDao.updateNeuron(neuron);
 			long end = System.currentTimeMillis();
@@ -137,7 +137,7 @@ public class MainController {
 		}
 		
 		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
-		else if (neuron.getId() != null && flagForm.getInsertFlag() != null) {
+		else if (isInsert(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			neuronDao.insertNeuron(neuron);
 			long end = System.currentTimeMillis();
@@ -158,7 +158,7 @@ public class MainController {
 		}
 		
 		// ニューロンの活性化
-		else if (neuron.getId() != null && flagForm.getActivateFlag() != null) {
+		else if (isActivate(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			neuronDao.activateNeuron(neuron);
 			long end = System.currentTimeMillis();
@@ -172,10 +172,11 @@ public class MainController {
 		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		long end = System.currentTimeMillis();
 		
-		if (neuron.getId() == null) {
+		if (isFirst(neuron)) {
 			log.info(logBrainScope);
-			log.info(logReturnNeuron, end-start);
 		}
+		
+		log.info(logReturnNeuron, end-start);
 		
 		return "brainscope";
 	}
@@ -197,11 +198,76 @@ public class MainController {
 		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		long end = System.currentTimeMillis();
 		
-		if (neuron.getId() == null) {
+		if (isFirst(neuron)) {
 			log.info(logSynapse);
-			log.info(logReturnSynapse, end-start);
 		}
 		
+		log.info(logReturnSynapse, end-start);
+		
 		return "synapse";
+	}
+	
+	Boolean isFirst(Neuron neuron) {
+		if(neuron.getId() == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isMoveUp(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && neuron.getNeuronLevel() - 1 > 0 && flagForm.getMoveUpFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isMoveDown(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && flagForm.getMoveDownFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isGenerate(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && flagForm.getGenerateFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isExtinct(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && flagForm.getExtinctFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isUpdate(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && flagForm.getUpdateFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isInsert(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && flagForm.getInsertFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isActivate(Neuron neuron, FlagForm flagForm) {
+		if(neuron.getId() != null && flagForm.getActivateFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
