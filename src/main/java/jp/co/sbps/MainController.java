@@ -79,8 +79,13 @@ public class MainController {
 	@RequestMapping("brainscope")
 	public String brainScope(Neuron neuron, FlagForm flagForm, Model model) {
 		
+		// エラーチェック （id <= 0）
+		if (isMinus(neuron)) {
+			log.info("仮メッセージ：idが負です。");
+		}
+		
 		// スコープアドレスの移動（上り）
-		if (isMoveUp(neuron, flagForm)) {
+		else if (isMoveUp(neuron, flagForm)) {
 			long start = System.currentTimeMillis();
 			configDao.moveUp(neuron);
 			long end = System.currentTimeMillis();
@@ -265,6 +270,14 @@ public class MainController {
 	
 	Boolean isActivate(Neuron neuron, FlagForm flagForm) {
 		if(neuron.getId() != null && flagForm.getActivateFlag() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	Boolean isMinus(Neuron neuron) {
+		if(neuron.getId() <= 0) {
 			return true;
 		} else {
 			return false;

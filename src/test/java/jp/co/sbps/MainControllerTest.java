@@ -147,4 +147,17 @@ public class MainControllerTest {
 		// Verify
 		assertThat(actual, is(true));
 	}
+	
+	@Test
+	public void isMinus_ニューロンのidが負であることを判定する() {
+		// Setup
+		Neuron neuron = new Neuron();
+		neuron.setId(-1);
+		
+		// Exercise
+		Boolean actual = mainController.isMinus(neuron);
+		
+		// Verify
+		assertThat(actual, is(true));
+	}
 }
