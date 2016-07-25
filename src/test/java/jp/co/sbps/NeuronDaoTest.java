@@ -81,7 +81,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void returnAllNeuronList_すべてのニューロンを返すことを確認する() {
-		// SetUp
+		// Setup
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		// Exercise
@@ -123,7 +123,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void updateNeuron_ニューロンが更新されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(1);
 		setup.setTitle("更新されたタイトル");
@@ -141,7 +141,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void generateNeuron_ニューロンが生成されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(1);
 		setup.setNeuronLevel(1);
@@ -159,7 +159,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void extinctNeuron_ニューロンが削除されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(1);
 		
@@ -174,7 +174,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void insertNeuron_ニューロンが挿入されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(2);
 		setup.setNeuronLevel(2);
@@ -192,7 +192,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void insertNeuronLevel_ニューロンレベルが調整されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(2);
 		
@@ -209,7 +209,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void activateNeuron_ニューロンが活性化されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(1);
 		
@@ -224,7 +224,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void activateNeuron_ニューロンが非活性化されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(1);
 		jdbc.update("UPDATE neuron SET active = true");
@@ -240,7 +240,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void parentNeuron_親ニューロンが出力されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron setup = new Neuron();
 		setup.setId(2);
 		setup.setNeuronLevel(2);
@@ -256,7 +256,7 @@ public class NeuronDaoTest {
 	
 	@Test
 	public void yougestNeuron_最も新しいニューロンが出力されることを確認する() {
-		// SetUp
+		// Setup
 		Neuron neuron = new Neuron();
 		
 		// Exercise
@@ -264,5 +264,18 @@ public class NeuronDaoTest {
 		
 		// Verify
 		assertThat(neuron.getId(), is(4));
+	}
+	
+	@Test
+	public void hasNeuron_指定のニューロンがあるかどうかを判定する() {
+		// Setup
+		Neuron neuron = new Neuron();
+		neuron.setId(1);
+		
+		// Exercise
+		Boolean actual = neuronDao.hasNeuron(neuron);
+		
+		// Verify
+		assertThat(actual, is(true));
 	}
 }

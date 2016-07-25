@@ -84,6 +84,11 @@ public class MainController {
 			log.info("仮メッセージ：idが負です。");
 		}
 		
+		// エラーチェック (neuron.size() < 0)
+		else if(!neuronDao.hasNeuron(neuron)) {
+			log.info("仮メッセージ：指定のニューロンがありません。");
+		}
+		
 		// スコープアドレスの移動（上り）
 		else if (isMoveUp(neuron, flagForm)) {
 			long start = System.currentTimeMillis();

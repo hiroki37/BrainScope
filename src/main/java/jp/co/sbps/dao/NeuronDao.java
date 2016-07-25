@@ -113,4 +113,13 @@ public class NeuronDao {
 	public Neuron youngestNeuron() {
 		return jdbc.query("SELECT * FROM neuron WHERE id = (SELECT MAX(id) FROM neuron)", new BeanPropertyRowMapper<>(Neuron.class)).get(0);
 	}
+	
+	// 指定のニューロンがあることを確認する
+	public Boolean hasNeuron(Neuron neuron) {
+		if(jdbc.queryForList("SELECT id FROM neuron WHERE id = ?", neuron.getId()).size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
