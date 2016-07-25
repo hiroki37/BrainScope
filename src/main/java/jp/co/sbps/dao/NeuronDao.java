@@ -33,19 +33,8 @@ public class NeuronDao {
 				new BeanPropertyRowMapper<>(Neuron.class), id).get(0);
 	}
 	
-	// ニューロンのリストを返す
-	public List<Neuron> returnNeuronList() {
-		Integer scopeAddress = configDao.returnConfig().getScopeAddress();
-		
-		return jdbc.query("SELECT * FROM neuron "
-				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?) "
-				+ "AND (neuron_level BETWEEN ? AND ? + 1) ORDER BY neuron_level ASC, create_date ASC",
-				new BeanPropertyRowMapper<>(Neuron.class),
-				scopeAddress, returnNeuron(scopeAddress).getNeuronLevel(), returnNeuron(scopeAddress).getNeuronLevel());
-	}
-	
 	// すべてのニューロンのリストを返す
-	public List<Neuron> returnAllNeuronList() {
+	public List<Neuron> returnNeuronList() {
 		return jdbc.query("SELECT * FROM neuron ORDER BY neuron_level ASC, create_date ASC",
 				new BeanPropertyRowMapper<>(Neuron.class));
 	}
@@ -97,6 +86,12 @@ public class NeuronDao {
 				newTitle, newContent, neuron.getNeuronLevel());
 	}
 	
+	// ニューロンレベルの調整
+	public void insertNeuronLevel(Neuron neuron) {
+		jdbc.update("UPDATE neuron SET neuron_level = neuron_level + 1 "
+				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", neuron.getId());
+	}
+	
 	// ニューロンの活性化/非活性化
 	public void activateNeuron(Neuron neuron) {
 		if (jdbc.queryForObject("SELECT active FROM neuron WHERE id = ?", Boolean.class, neuron.getId())) {
@@ -117,11 +112,5 @@ public class NeuronDao {
 	// 最も若いニューロンを返す
 	public Neuron youngestNeuron() {
 		return jdbc.query("SELECT * FROM neuron WHERE id = (SELECT MAX(id) FROM neuron)", new BeanPropertyRowMapper<>(Neuron.class)).get(0);
-	}
-	
-	// ニューロンレベルの調整
-	public void insertNeuronLevel(Neuron neuron) {
-		jdbc.update("UPDATE neuron SET neuron_level = neuron_level + 1 "
-				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?)", neuron.getId());
 	}
 }

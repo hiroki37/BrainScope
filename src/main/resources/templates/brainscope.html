@@ -26,45 +26,45 @@
 		
 		<div class="row" style="padding-top: 50px;">
 			<table class="table-hover table-condensed col-xs-6" style="position: fixed;">
-				<tr>
+				<tr th:each="neuron : ${neuron}" th:class="${!(neuron.neuronLevel == parentNeuron.neuronLevel)} ? 'display'">
 					<td>
 						<!-- スコープアドレスの移動（上り） -->
 						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="moveUpFlag" value="1" />
-							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
-							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
+							<input type="hidden" name="id" th:value="${neuron.id}" />
+							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<button class="btn btn-lg" type="submit" title="戻る"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの生成 -->
 						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="generateFlag" value="1" />
-							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
-							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
+							<input type="hidden" name="id" th:value="${neuron.id}" />
+							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<button class="btn btn-lg" type="submit" title="ニューロンを生成"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 						</form>
 						<!-- ニューロンの活性化 -->
 						<form class="inline" method="post" th:action="@{brainscope}">
 							<input type="hidden" name="activateFlag" value="1" />
-							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
-							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
-							<span th:class="${neuron.get(0).active} ? 'display'">
+							<input type="hidden" name="id" th:value="${neuron.id}" />
+							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
+							<span th:class="${neuron.active} ? 'display'">
 								<button class="btn btn-lg" type="submit" title="ニューロンを活性化"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
 							</span>
-							<span th:class="${!(neuron.get(0).active)} ? 'display'">
+							<span th:class="${!(neuron.active)} ? 'display'">
 								<button class="btn btn-lg" type="submit" title="ニューロンを非活性化"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
 							</span>
 						</form>
 						<!-- ニューロンの更新 -->
 						<form method="post" th:action="@{brainscope}">
 							<input type="hidden" name="updateFlag" value="1" />
-							<input type="hidden" name="id" th:value="${neuron.get(0).id}" />
-							<input type="hidden" name="neuronLevel" th:value="${neuron.get(0).neuronLevel}" />
+							<input type="hidden" name="id" th:value="${neuron.id}" />
+							<input type="hidden" name="neuronLevel" th:value="${neuron.neuronLevel}" />
 							<table class="width-100per">
 								<tr>
 									<td style="padding-top: 5px;">
 										<!-- タイトル -->
 										<div class="input-group">
-											<input class="form-control input-lg" name="title" placeholder="Title" th:value="${neuron.get(0).title}" />
+											<input class="form-control input-lg" name="title" placeholder="Title" th:value="${neuron.title}" />
 											<span class="input-group-btn">
 												<button class="btn btn-lg" type="submit"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Save</button>
 											</span>
@@ -74,7 +74,7 @@
 								<tr>
 									<td style="padding-top: 5px;">
 										<!-- コンテンツ  -->
-										<textarea class="form-control textarea input-lg" style="height: 60vh" name="content" placeholder="Content" th:text="${neuron.get(0).content}"></textarea>
+										<textarea class="form-control textarea input-lg" style="height: 60vh" name="content" placeholder="Content" th:text="${neuron.content}"></textarea>
 									</td>
 								</tr>
 							</table>
@@ -84,7 +84,7 @@
 			</table>
 			
 			<table class="table-hover table-condensed col-xs-6" style="float: right;">
-				<tr th:each="neuron, iterStat : ${neuron}" th:class="${iterStat.first} ? 'display'">
+				<tr th:each="neuron : ${neuron}" th:class="${!(neuron.neuronLevel == parentNeuron.neuronLevel+1)} ? 'display'">
 					<td>
 						<!-- スコープアドレスの移動（下り） -->
 						<form class="inline" method="post" th:action="@{brainscope}">

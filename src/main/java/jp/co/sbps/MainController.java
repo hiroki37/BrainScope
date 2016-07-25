@@ -26,6 +26,20 @@ public class MainController {
 	@Autowired
 	ConfigDao configDao;
 	
+	// @Valueが冗長なので美しくする手法を考える
+	
+	@Value("${log.brainScope}")
+	String logBrainScope;
+	
+	@Value("${log.returnNeuron}")
+	String logReturnNeuron;
+	
+	@Value("${log.synapse}")
+	String logSynapse;
+	
+	@Value("${log.returnSynapse}")
+	String logReturnSynapse;
+	
 	@Value("${log.moveUp}")
 	String logMoveUp;
 	
@@ -154,12 +168,13 @@ public class MainController {
 		
 		// ニューロンのリストをモデルに代入
 		long start = System.currentTimeMillis();
+		model.addAttribute("parentNeuron", neuronDao.returnNeuron(configDao.returnConfig().getScopeAddress()));
 		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		long end = System.currentTimeMillis();
 		
 		if (neuron.getId() == null) {
-			log.info("＝＝＝＝＝brainscopeの起動＝＝＝＝＝");
-			log.info("【アクション】ニューロンの表示 | 【経過時間】:{}ms", end-start);
+			log.info(logBrainScope);
+			log.info(logReturnNeuron, end-start);
 		}
 		
 		return "brainscope";
@@ -179,12 +194,12 @@ public class MainController {
 		
 		// すべてのニューロンのリストをモデルに代入
 		long start = System.currentTimeMillis();
-		model.addAttribute("neuron", neuronDao.returnAllNeuronList());
+		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		long end = System.currentTimeMillis();
 		
 		if (neuron.getId() == null) {
-			log.info("＝＝＝＝＝synapseの起動＝＝＝＝＝");
-			log.info("【アクション】ニューロンの表示 | 【経過時間】:{}ms", end-start);
+			log.info(logSynapse);
+			log.info(logReturnSynapse, end-start);
 		}
 		
 		return "synapse";

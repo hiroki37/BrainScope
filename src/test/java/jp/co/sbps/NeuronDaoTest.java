@@ -80,38 +80,12 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void returnNeuronList_現在のニューロンとそれより１つ深い子ニューロンを返すことを確認する() {
-		// SetUp
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		// Exercise
-		List<Neuron> neuron = neuronDao.returnNeuronList();
-		
-		// Verify
-		assertThat(neuron.get(0).getId(), is(1));
-		assertThat(neuron.get(0).getTitle(), is("ニューロン１"));
-		assertThat(neuron.get(0).getContent(), is("コンテンツ１"));
-		assertThat(neuron.get(0).getNeuronLevel(), is(1));
-		assertThat(neuron.get(0).getActive(), is(false));
-		assertThat(format.format(neuron.get(0).getCreateDate().getTime()), is("2016-04-01 00:00:00"));
-		assertThat(format.format(neuron.get(0).getUpdateDate().getTime()), is("2016-04-01 00:00:00"));
-		
-		assertThat(neuron.get(1).getId(), is(2));
-		assertThat(neuron.get(1).getTitle(), is("ニューロン２"));
-		assertThat(neuron.get(1).getContent(), is("コンテンツ２"));
-		assertThat(neuron.get(1).getNeuronLevel(), is(2));
-		assertThat(neuron.get(1).getActive(), is(false));
-		assertThat(format.format(neuron.get(1).getCreateDate().getTime()), is("2016-04-01 00:00:00"));
-		assertThat(format.format(neuron.get(1).getUpdateDate().getTime()), is("2016-04-01 00:00:00"));
-	}
-	
-	@Test
 	public void returnAllNeuronList_すべてのニューロンを返すことを確認する() {
 		// SetUp
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		// Exercise
-		List<Neuron> neuron = neuronDao.returnAllNeuronList();
+		List<Neuron> neuron = neuronDao.returnNeuronList();
 		
 		// Verify
 		assertThat(neuron.get(0).getId(), is(1));
@@ -217,6 +191,23 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
+	public void insertNeuronLevel_ニューロンレベルが調整されることを確認する() {
+		// SetUp
+		Neuron setup = new Neuron();
+		setup.setId(2);
+		
+		// Exercise
+		neuronDao.insertNeuronLevel(setup);
+		List<Neuron> neuron = jdbc.query("SELECT * FROM neuron WHERE id >= 2",
+				new BeanPropertyRowMapper<>(Neuron.class));
+		
+		// Verify
+		assertThat(neuron.get(0).getNeuronLevel(), is(3));
+		assertThat(neuron.get(1).getNeuronLevel(), is(4));
+		assertThat(neuron.get(2).getNeuronLevel(), is(4));
+	}
+	
+	@Test
 	public void activateNeuron_ニューロンが活性化されることを確認する() {
 		// SetUp
 		Neuron setup = new Neuron();
@@ -273,22 +264,5 @@ public class NeuronDaoTest {
 		
 		// Verify
 		assertThat(neuron.getId(), is(4));
-	}
-	
-	@Test
-	public void insertNeuronLevel_ニューロンレベルが調整されることを確認する() {
-		// SetUp
-		Neuron setup = new Neuron();
-		setup.setId(2);
-		
-		// Exercise
-		neuronDao.insertNeuronLevel(setup);
-		List<Neuron> neuron = jdbc.query("SELECT * FROM neuron WHERE id >= 2",
-				new BeanPropertyRowMapper<>(Neuron.class));
-		
-		// Verify
-		assertThat(neuron.get(0).getNeuronLevel(), is(3));
-		assertThat(neuron.get(1).getNeuronLevel(), is(4));
-		assertThat(neuron.get(2).getNeuronLevel(), is(4));
 	}
 }
