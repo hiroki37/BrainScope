@@ -1,4 +1,4 @@
-package jp.co.sbps;
+package jp.co.sbps.dao;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.sbps.BrainScopeApplication;
 import jp.co.sbps.dao.NeuronDao;
 import jp.co.sbps.entity.Neuron;
 

@@ -1,36 +1,33 @@
+package jp.co.sbps.dao;
 
-package jp.co.sbps;
-
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
-
 import org.junit.Before;
+
+/*
+ * TreeDiagramDaoが適切に動作しているかを確認するプログラム
+ */
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import jp.co.sbps.dao.ConfigDao;
-import jp.co.sbps.entity.Config;
+import jp.co.sbps.BrainScopeApplication;
+import jp.co.sbps.dao.TreeDiagramDao;
 import jp.co.sbps.entity.Neuron;
-
-/*
- * ConfigDaoが適切に動作しているかを確認するプログラム
- */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BrainScopeApplication.class)
 @Transactional
-public class ConfigDaoTest {
+public class TreeDiagramDaoTest {
 	
 	@Autowired
-	private ConfigDao configDao;
+	private TreeDiagramDao treeDiagramDao;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -61,45 +58,51 @@ public class ConfigDaoTest {
 	}
 	
 	@Test
-	public void moveUp_スコープアドレスが移動していることを確認する() {
+	public void generateTreeDiagram_木構造が適切に生成されていることを確認する() {
 		// SetUp
 		Neuron setup = new Neuron();
-		setup.setId(2);
-		setup.setNeuronLevel(2);
+		setup.setId(1);
+		
+		Neuron youngestSetup = new Neuron();
+		youngestSetup.setId(5);
 		
 		// Exercise
-		configDao.moveUp(setup);
-		List<Config> config = jdbc.query("SELECT * FROM config",
-				new BeanPropertyRowMapper<>(Config.class));
+		treeDiagramDao.generateTreeDiagram(setup, youngestSetup);
+		String treeDiagram = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE descendant = 5"));
 		
 		// Verify
-		assertThat(config.get(0).getScopeAddress(), is(1));
+		assertThat(treeDiagram, is("[{ancestor=1, descendant=5}, {ancestor=5, descendant=5}]"));
 	}
 	
 	@Test
-	public void moveDown_スコープアドレスが移動していることを確認する() {
+	public void extinctTreeDiagram_木構造が適切に削除されていることを確認する() {
 		// SetUp
 		Neuron setup = new Neuron();
 		setup.setId(2);
 		
 		// Exercise
-		configDao.moveDown(setup);
-		List<Config> config = jdbc.query("SELECT * FROM config",
-				new BeanPropertyRowMapper<>(Config.class));
+		treeDiagramDao.extinctTreeDiagram(setup);
+		String treeDiagram = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE ancestor = 2"));
 		
 		// Verify
-		assertThat(config.get(0).getScopeAddress(), is(2));
+		assertThat(treeDiagram, is("[]"));
 	}
 	
 	@Test
-	public void returnConfig_コンフィグを返すことを確認する() {
+	public void insertTreeDiagram_木構造が適切に挿入されていることを確認する() {
 		// SetUp
+		Neuron setup = new Neuron();
+		setup.setId(4);
+		setup.setNeuronLevel(3);
+		
+		Neuron youngestSetup = new Neuron();
+		youngestSetup.setId(5);
 		
 		// Exercise
-		Config config = configDao.returnConfig();
+		treeDiagramDao.insertTreeDiagram(setup, youngestSetup);
+		String treeDiagram = String.valueOf(jdbc.queryForList("SELECT * FROM tree_diagram WHERE ancestor = 5 OR descendant = 5"));
 		
 		// Verify
-		assertThat(config.getScopeAddress(), is(1));
-		assertThat(config.getScopeSize(), is(2));
+		assertThat(treeDiagram, is("[{ancestor=1, descendant=5}, {ancestor=2, descendant=5}, {ancestor=5, descendant=5}, {ancestor=5, descendant=4}]"));
 	}
 }
