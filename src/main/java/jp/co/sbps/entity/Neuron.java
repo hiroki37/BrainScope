@@ -23,7 +23,7 @@ public class Neuron {
 	
 	// ニューロンレベル
 	private Integer neuronLevel;
-
+	
 	// ニューロンの活性/非活性
 	private Boolean active;
 	
