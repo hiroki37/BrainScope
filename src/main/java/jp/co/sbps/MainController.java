@@ -26,8 +26,6 @@ public class MainController {
 	@Autowired
 	ConfigDao configDao;
 	
-	// @Valueが冗長なので美しくする手法を考える⇒（追記）これってそもそもDaoに記述するもんやないの？
-	
 	@Value("${log.brainScope}")
 	String logBrainScope;
 	
@@ -91,102 +89,67 @@ public class MainController {
 		
 		// スコープアドレスの移動（上り）
 		else if (isMoveUp(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logMoveUp, neuron.getId(), neuron.getNeuronLevel(), flagForm.getMoveUpFlag());	
 			configDao.moveUp(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logMoveUp,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getMoveUpFlag());
 		}
 		
 		// スコープアドレスの移動（下り）
 		else if (isMoveDown(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logMoveDown, neuron.getId(), neuron.getNeuronLevel(), flagForm.getMoveDownFlag());
 			configDao.moveDown(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logMoveDown,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getMoveDownFlag());
 		}
 		
 		// ニューロンの生成＆木構造の生成
 		else if (isGenerate(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logGenerateNeuron, neuron.getId(), neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 			neuronDao.generateNeuron(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logGenerateNeuron,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 			
-			start = System.currentTimeMillis();
+			log.info(logGenerateTree, neuron.getId(), neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 			treeDiagramDao.generateTreeDiagram(neuron, neuronDao.youngestNeuron());
-			end = System.currentTimeMillis();
-			log.info(logGenerateTree,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getGenerateFlag());
 		}
 		
 		// ニューロンの削除＆木構造の削除
 		else if (isExtinct(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logExtinctNeuron, neuron.getId(), neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 			neuronDao.extinctNeuron(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logExtinctNeuron,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 			
-			start = System.currentTimeMillis();
+			log.info(logExtinctTree, neuron.getId(), neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 			treeDiagramDao.extinctTreeDiagram(neuron);
-			end = System.currentTimeMillis();
-			log.info(logExtinctTree,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getExtinctFlag());
 		}
 		
 		// ニューロンの更新
 		else if (isUpdate(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logUpdate, neuron.getId(), neuron.getNeuronLevel(), flagForm.getUpdateFlag());
 			neuronDao.updateNeuron(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logUpdate,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getUpdateFlag());
 		}
 		
 		// ニューロンの挿入＆木構造の挿入＆ニューロンレベルの調整
 		else if (isInsert(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logInsertNeuron, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			neuronDao.insertNeuron(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logInsertNeuron,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			
-			start = System.currentTimeMillis();
+			log.info(logInsertTree, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			treeDiagramDao.insertTreeDiagram(neuron, neuronDao.youngestNeuron());
-			end = System.currentTimeMillis();
-			log.info(logInsertTree,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			
-			start = System.currentTimeMillis();
+			log.info(logInsertNeuronLevel, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 			neuronDao.insertNeuronLevel(neuron);
-			end = System.currentTimeMillis();
-			log.info(logInsertNeuronLevel,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getInsertFlag());
 		}
 		
 		// ニューロンの活性化
 		else if (isActivate(neuron, flagForm)) {
-			long start = System.currentTimeMillis();
+			log.info(logActivate, neuron.getId(), neuron.getNeuronLevel(), flagForm.getActivateFlag());
 			neuronDao.activateNeuron(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logActivate,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getActivateFlag());
 		}
 		
 		// ニューロンのリストをモデルに代入
-		long start = System.currentTimeMillis();
-		model.addAttribute("parentNeuron", neuronDao.returnNeuron(configDao.returnConfig().getScopeAddress()));
-		model.addAttribute("neuron", neuronDao.returnNeuronList());
-		long end = System.currentTimeMillis();
-		
 		if (isFirst(neuron)) {
 			log.info(logBrainScope);
 		}
 		
-		log.info(logReturnNeuron, end-start);
+		log.info(logReturnNeuron);
+		
+		model.addAttribute("parentNeuron", neuronDao.returnNeuron(configDao.returnConfig().getScopeAddress()));
+		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		
 		return "brainscope";
 	}
@@ -196,23 +159,18 @@ public class MainController {
 		
 		// ニューロンの活性化
 		if (neuron.getId() != null && flagForm.getActivateFlag() != null) {
-			long start = System.currentTimeMillis();
+			log.info(logActivate, neuron.getId(), neuron.getNeuronLevel(), flagForm.getActivateFlag());
 			neuronDao.activateNeuron(neuron);
-			long end = System.currentTimeMillis();
-			log.info(logActivate,
-					end-start, neuron.getId(), neuron.getNeuronLevel(), flagForm.getActivateFlag());
 		}
 		
-		// すべてのニューロンのリストをモデルに代入
-		long start = System.currentTimeMillis();
-		model.addAttribute("neuron", neuronDao.returnNeuronList());
-		long end = System.currentTimeMillis();
-		
+		// ニューロンのリストをモデルに代入
 		if (isFirst(neuron)) {
 			log.info(logSynapse);
 		}
 		
-		log.info(logReturnSynapse, end-start);
+		log.info(logReturnSynapse);
+		
+		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		
 		return "synapse";
 	}

@@ -16,7 +16,7 @@ public class DaoInterceptor {
 	public Object invoke(ProceedingJoinPoint point) throws Throwable {
 		long start = System.currentTimeMillis();
 		Object returnObject = point.proceed();
-		log.info("AOP - {}#{}, time:{}ms", getClassName(point), getMethodName(point),
+		log.info("AOP - 後処理 {}#{}, time:{}ms", getClassName(point), getMethodName(point),
 				System.currentTimeMillis() - start);
 		
 		return returnObject;
