@@ -26,6 +26,12 @@ public class MainController {
 	@Autowired
 	ConfigDao configDao;
 	
+	@Value("${log.isMinus}")
+	String logIsMinus;
+	
+	@Value("${log.hasNeuron}")
+	String logHasNeuron;
+	
 	@Value("${log.brainScope}")
 	String logBrainScope;
 	
@@ -79,11 +85,13 @@ public class MainController {
 		
 		// エラーチェック （指定のidが負）
 		if (neuron.getId() != null && isMinus(neuron)) {
+			log.error(logIsMinus);
 			model.addAttribute("isMinus", true);
 		}
 		
 		// エラーチェック (指定のニューロンが存在しない)
 		else if(neuron.getId() != null && !neuronDao.hasNeuron(neuron)) {
+			log.error(logHasNeuron);
 			model.addAttribute("hasNeuron", true);
 		}
 		
