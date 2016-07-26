@@ -26,7 +26,7 @@ public class MainController {
 	@Autowired
 	ConfigDao configDao;
 	
-	// @Valueが冗長なので美しくする手法を考える
+	// @Valueが冗長なので美しくする手法を考える⇒（追記）これってそもそもDaoに記述するもんやないの？
 	
 	@Value("${log.brainScope}")
 	String logBrainScope;
@@ -79,14 +79,14 @@ public class MainController {
 	@RequestMapping("brainscope")
 	public String brainScope(Neuron neuron, FlagForm flagForm, Model model) {
 		
-		// エラーチェック （id <= 0）
-		if (isMinus(neuron)) {
-			log.info("仮メッセージ：idが負です。");
+		// エラーチェック （指定のidが負）
+		if (neuron.getId() != null && isMinus(neuron)) {
+			model.addAttribute("isMinus", true);
 		}
 		
-		// エラーチェック (neuron.size() < 0)
-		else if(!neuronDao.hasNeuron(neuron)) {
-			log.info("仮メッセージ：指定のニューロンがありません。");
+		// エラーチェック (指定のニューロンが存在しない)
+		else if(neuron.getId() != null && !neuronDao.hasNeuron(neuron)) {
+			model.addAttribute("hasNeuron", true);
 		}
 		
 		// スコープアドレスの移動（上り）

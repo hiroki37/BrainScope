@@ -25,6 +25,9 @@
 		</ul>
 		
 		<div class="row" style="padding-top: 50px;">
+			<p style="color: red" th:class="!${isMinus} ? 'display'">　※指定のidが適切な値では無かったため、操作は実行されませんでした。</p>
+			<p style="color: red" th:class="!${hasNeuron} ? 'display'">　※指定のニューロンが存在しなかったため、操作は実行されませんでした。</p>
+			
 			<table class="table-hover table-condensed col-xs-6" style="position: fixed;">
 				<tr th:each="neuron : ${neuron}" th:class="${!(neuron.neuronLevel == parentNeuron.neuronLevel)} ? 'display'">
 					<td>
