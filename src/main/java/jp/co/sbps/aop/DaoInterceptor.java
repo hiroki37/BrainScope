@@ -1,4 +1,3 @@
-/*
 package jp.co.sbps.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,23 +11,22 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class DaoInterceptor {
-
-	@Around("execution(* jp.co.sbps.nikocale.dao.*.*(..))")
+	
+	@Around("execution(* jp.co.sbps.dao.*.*(..))")
 	public Object invoke(ProceedingJoinPoint point) throws Throwable {
 		long start = System.currentTimeMillis();
-		log.trace("AOP - 前処理 {}#{}", getClassName(point), getMethodName(point));
 		Object returnObject = point.proceed();
-		log.info("AOP - 後処理 {}#{}, time:{}ms", getClassName(point), getMethodName(point),
+		log.info("AOP - {}#{}, time:{}ms", getClassName(point), getMethodName(point),
 				System.currentTimeMillis() - start);
+		
 		return returnObject;
 	}
+	
+    private String getClassName(ProceedingJoinPoint point) {
+        return point.getTarget().getClass().getName();
+    }
 
-	private String getClassName(ProceedingJoinPoint point) {
-		return point.getTarget().getClass().getName();
-	}
-
-	private String getMethodName(ProceedingJoinPoint point) {
-		return point.getSignature().getName();
-	}
+    private String getMethodName(ProceedingJoinPoint point) {
+        return point.getSignature().getName();
+    }
 }
-*/

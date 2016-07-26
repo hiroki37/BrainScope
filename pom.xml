@@ -78,6 +78,23 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		
+		<!-- AspectJ -->
+		<!-- AspectJのライブラリ -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjrt</artifactId>
+		    </dependency>
+		<!-- AspectJの動的ウィービング用のライブラリ -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    </dependency>
+		<!-- AspectJのコンパイラとラッパーが入っているライブラリ -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjtools</artifactId>
+		    </dependency>
 	</dependencies>
 	
 	<build>
