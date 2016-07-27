@@ -92,9 +92,9 @@
 		    </dependency>
 		<!-- AspectJのコンパイラとラッパーが入っているライブラリ -->
 		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjtools</artifactId>
-		    </dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<build>
