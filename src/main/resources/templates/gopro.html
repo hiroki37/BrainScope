@@ -9,7 +9,7 @@
 	
 </head>
 
-<body>
+<body background="http://www.wallpaper-box.com/star/19201080/images/star8.jpg" bgproperties="fixed">
 
 	<div class="container">
 	
@@ -20,7 +20,7 @@
 				</a>
 			</li>
 			<li role="presentation">
-				<a href="">
+				<a th:href="@{synapse}">
 					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Synapse
 				</a>
 			</li>
@@ -34,7 +34,7 @@
 	</div>
 	
 	<div class="text-center" style="padding-top: 50px">
-		<div class="form-group" role="group">
+		<div class="form-group col-xs-3" role="group">
 			<form method="post" name="form" action="https://stbfep.sps-system.com/f01/FepBuyInfoReceive.do">
 					<input name="merchant_id" class="form-control" placeholder="マーチャントID" value="66755" disabled="disabled" /><br />
 					<input name="service_id" class="form-control" placeholder="サービスID" value="500" disabled="disabled" /><br />
@@ -50,8 +50,11 @@
 					<input name="pagecon_url" class="form-control" placeholder="決済通知用CGI" maxlength="500" value="" /><br />
 					<input name="request_date" class="form-control" placeholder="リクエスト日時" maxlength="14" value="" /><br />
 					<input name=" sps_hashcode" class="form-control" placeholder="チェックサム" maxlength="40" value="" />
-				<br /><button class="btn btn-lg" type="submit"></button>
+				<br /><button class="btn btn-lg" type="submit">覚醒</button>
 			</form>
+		</div>
+		<div class="col-xs-9">
+			<p><font size="10" color="ffffff">あなたの脳は、<br />まだ目覚めていない...<br /><br />Go Pro NOW</font></p>
 		</div>
 	</div>
 	
