@@ -1,5 +1,3 @@
-// pullRequestブランチ
-
 package jp.co.sbps;
 
 import org.slf4j.Logger;
@@ -183,6 +181,11 @@ public class MainController {
 		model.addAttribute("neuron", neuronDao.returnNeuronList());
 		
 		return "synapse";
+	}
+	
+	@RequestMapping("gopro")
+	public String gopro(Model model) {
+		return "gopro";
 	}
 	
 	Boolean isFirst(Neuron neuron) {

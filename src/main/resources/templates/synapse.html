@@ -24,6 +24,11 @@
 					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Synapse
 				</a>
 			</li>
+			<li role="presentation">
+				<a th:href="@{gopro}">
+					<span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Go Pro
+				</a>
+			</li>
 		</ul>
 		
 		<div class="row" style="padding-top: 50px;">
@@ -42,7 +47,7 @@
 							<input readonly="readonly" class="form-control input-lg" th:value="${neuron.neuronLevel}" />
 						</td>
 						<!-- タイトル -->
-						<td class="col-xs-5">
+						<td class="col-xs-7">
 							<input readonly="readonly" class="form-control input-lg" th:value="${neuron.title}" />
 						</td>
 						<td class="col-xs-2">
