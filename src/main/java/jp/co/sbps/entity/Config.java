@@ -2,7 +2,7 @@ package jp.co.sbps.entity;
 
 import lombok.Data;
 
-/*
+/**
  * コンフィグのエンティティクラス
  * コンフィグの情報を保持
  */

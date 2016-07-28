@@ -80,6 +80,15 @@ public class MainController {
 	/** logger **/
 	private final static Logger log = LoggerFactory.getLogger(MainController.class);
 	
+	/**
+	 * 現在のスコープアドレスのニューロンとその子ニューロンを表示します。
+	 * 
+	 * @param neuron ニューロンの情報を格納しているエンティティクラス
+	 * @param flagForm フラグの情報を格納しているフォームクラス
+	 * @param model モデル
+	 * @return ニューロンの表示画面
+	 */
+	
 	@RequestMapping("brainscope")
 	public String brainScope(Neuron neuron, FlagForm flagForm, Model model) {
 		
@@ -162,6 +171,15 @@ public class MainController {
 		return "brainscope";
 	}
 	
+	/**
+	 * 活性化しているニューロンを表示します。
+	 * 
+	 * @param neuron ニューロンの情報を格納しているエンティティクラス
+	 * @param flagForm フラグの情報を格納しているフォームクラス
+	 * @param model モデル
+	 * @return 活性化しているニューロンの表示画面
+	 */
+	
 	@RequestMapping("synapse")
 	public String synapse(Neuron neuron, FlagForm flagForm, Model model) {
 		
@@ -182,6 +200,14 @@ public class MainController {
 		
 		return "synapse";
 	}
+	
+	/**
+	 * GoPro
+	 * Activate Your Brain!
+	 * 
+	 * @param model モデル
+	 * @return GoPro
+	 */
 	
 	@RequestMapping("gopro")
 	public String gopro(Model model) {

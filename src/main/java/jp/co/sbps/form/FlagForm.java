@@ -2,7 +2,7 @@ package jp.co.sbps.form;
 
 import lombok.Data;
 
-/*
+/**
  * フラグフォーム
  */
 

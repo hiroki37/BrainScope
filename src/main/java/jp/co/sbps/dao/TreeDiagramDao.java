@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import jp.co.sbps.entity.Neuron;
 
-/*
+/**
  * tree_diagramテーブルへのアクセスをするDaoクラス
 */
 

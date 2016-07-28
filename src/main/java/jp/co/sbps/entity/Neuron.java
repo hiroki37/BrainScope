@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import lombok.Data;
 
-/*
+/**
  * ニューロンのエンティティクラス
  * ニューロンの情報を保持
  */

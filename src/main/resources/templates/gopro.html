@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>GoPro</title>
+	<link rel="stylesheet" href="./css/default.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="screen" />
+	
+</head>
+
+<body>
+
+	<div class="container">
+	
+		<ul class="nav nav-tabs navbar-fixed-top" style="background-color: #ffffff">
+			<li role="presentation">
+				<a th:href="@{brainscope}">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> BrainScope
+				</a>
+			</li>
+			<li role="presentation">
+				<a href="">
+					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Synapse
+				</a>
+			</li>
+			<li role="presentation" class="active">
+				<a th:href="@{gopro}">
+					<span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span> Go Pro
+				</a>
+			</li>
+		</ul>
+		
+	</div>
+	
+	<div class="text-center" style="padding-top: 50px">
+		<div class="form-group" role="group">
+			<form method="post" name="form" action="https://stbfep.sps-system.com/f01/FepBuyInfoReceive.do">
+					<input name="merchant_id" class="form-control" placeholder="マーチャントID" value="66755" disabled="disabled" /><br />
+					<input name="service_id" class="form-control" placeholder="サービスID" value="500" disabled="disabled" /><br />
+					<input name="cust_code" class="form-control" placeholder="顧客ID" maxlength="64" value="" /><br />
+					<input name="order_id" class="form-control" placeholder="購入ID" maxlength="38" value="" /><br />
+					<input name="item_id" class="form-control" placeholder="商品ID" maxlength="32" value="" /><br />
+					<input name="amount" class="form-control" placeholder="金額（税込）" maxlength="8" value="" /><br />
+					<input name=" pay_type" class="form-control" placeholder="購入タイプ" maxlength="1" value="" /><br />
+					<input name="service_type" class="form-control" placeholder="サービスタイプ" maxlength="1" value="" /><br />
+					<input name="success_url" class="form-control" placeholder="決済完了時URL" maxlength="500" value="http://stbfep.sps-system.com/MerchantPaySuccess.jsp" disabled="disabled" /><br />
+					<input name="cancel_url" class="form-control" placeholder="決済キャンセル時URL" maxlength="500" value="http://stbfep.sps-system.com/MerchantPayCancel.jsp" disabled="disabled" /><br />
+					<input name="error_url" class="form-control" placeholder="エラー時URL" maxlength="500" value="http://stbfep.sps-system.com/MerchantPayError.jsp" disabled="disabled" /><br />
+					<input name="pagecon_url" class="form-control" placeholder="決済通知用CGI" maxlength="500" value="" /><br />
+					<input name="request_date" class="form-control" placeholder="リクエスト日時" maxlength="14" value="" /><br />
+					<input name=" sps_hashcode" class="form-control" placeholder="チェックサム" maxlength="40" value="" />
+				<br /><button class="btn btn-lg" type="submit"></button>
+			</form>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		var x = document.form.elements['cust_code'];
+		x.value = Math.floor( Math.random() * 10000 ) ;;
+
+		var y = document.form.elements['order_id'];
+		y.value = Math.floor( Math.random() * 10000 ) ;;
+	</script>
+	
+</body>
+</html>

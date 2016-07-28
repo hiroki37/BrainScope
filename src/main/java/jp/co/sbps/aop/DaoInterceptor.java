@@ -12,6 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DaoInterceptor {
 	
+	/**
+	 * Daoのインターセプタ処理
+	 * 
+	 * @param point ジョイントポイント（インターセプタの対象）
+	 * @return 戻り値オブジェクト
+	 * @throws Throwable すべての例外 / エラー
+	 */
+	
 	@Around("execution(* jp.co.sbps.dao.*.*(..))")
 	public Object invoke(ProceedingJoinPoint point) throws Throwable {
 		long start = System.currentTimeMillis();

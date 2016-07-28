@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import jp.co.sbps.entity.Config;
 import jp.co.sbps.entity.Neuron;
 
-/*
+/**
  * configテーブルへのアクセスをするDaoクラス
 */
 
