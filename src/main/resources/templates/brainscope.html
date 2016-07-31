@@ -34,7 +34,7 @@
 			<p style="color: red" th:class="!${hasNeuron} ? 'display'">　※指定のニューロンが存在しなかったため、操作は実行されませんでした。</p>
 			
 			<table class="table-hover table-condensed col-xs-6" style="position: fixed;">
-				<tr th:each="neuron : ${neuron}" th:class="${!(neuron.neuronLevel == parentNeuron.neuronLevel)} ? 'display'">
+				<tr th:each="neuron, iterStat : ${neuron}" th:class="${!(iterStat.first)} ? 'display'">
 					<td>
 						<!-- スコープアドレスの移動（上り） -->
 						<form class="inline" method="post" th:action="@{brainscope}">
@@ -92,7 +92,7 @@
 			</table>
 			
 			<table class="table-hover table-condensed col-xs-6" style="float: right;">
-				<tr th:each="neuron : ${neuron}" th:class="${!(neuron.neuronLevel == parentNeuron.neuronLevel+1)} ? 'display'">
+				<tr th:each="neuron, iterStat : ${neuron}" th:class="${(iterStat.first)} ? 'display'">
 					<td>
 						<!-- スコープアドレスの移動（下り） -->
 						<form class="inline" method="post" th:action="@{brainscope}">

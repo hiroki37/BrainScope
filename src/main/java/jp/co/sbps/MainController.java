@@ -165,8 +165,7 @@ public class MainController {
 		
 		log.info(logReturnNeuron);
 		
-		model.addAttribute("parentNeuron", neuronDao.returnNeuron(configDao.returnConfig().getScopeAddress()));
-		model.addAttribute("neuron", neuronDao.returnNeuronList());
+		model.addAttribute("neuron", neuronDao.returnChildren(configDao.returnConfig().getScopeAddress()));
 		
 		return "brainscope";
 	}

@@ -62,7 +62,7 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void presentNeuron_ニューロンを返すことを確認する() {
+	public void returnNeuron_ニューロンを返すことを確認する() {
 		// Setup
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Integer id = 1;
@@ -81,7 +81,7 @@ public class NeuronDaoTest {
 	}
 	
 	@Test
-	public void returnAllNeuronList_すべてのニューロンを返すことを確認する() {
+	public void returnNeuronList_すべてのニューロンを返すことを確認する() {
 		// Setup
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
@@ -120,6 +120,33 @@ public class NeuronDaoTest {
 		assertThat(neuron.get(3).getActive(), is(false));
 		assertThat(format.format(neuron.get(3).getCreateDate().getTime()), is("2016-04-01 00:00:00"));
 		assertThat(format.format(neuron.get(3).getUpdateDate().getTime()), is("2016-04-01 00:00:00"));
+	}
+	
+	@Test
+	public void returnChildren_親ニューロンのidをキーに子ニューロンのリストを返すことを確認する() {
+		// Setup
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Integer id = 1;
+		
+		// Exercise
+		List<Neuron> neuron = neuronDao.returnChildren(id);
+		
+		// Verify
+		assertThat(neuron.get(0).getId(), is(1));
+		assertThat(neuron.get(0).getTitle(), is("ニューロン１"));
+		assertThat(neuron.get(0).getContent(), is("コンテンツ１"));
+		assertThat(neuron.get(0).getNeuronLevel(), is(1));
+		assertThat(neuron.get(0).getActive(), is(false));
+		assertThat(format.format(neuron.get(0).getCreateDate().getTime()), is("2016-04-01 00:00:00"));
+		assertThat(format.format(neuron.get(0).getUpdateDate().getTime()), is("2016-04-01 00:00:00"));
+		
+		assertThat(neuron.get(1).getId(), is(2));
+		assertThat(neuron.get(1).getTitle(), is("ニューロン２"));
+		assertThat(neuron.get(1).getContent(), is("コンテンツ２"));
+		assertThat(neuron.get(1).getNeuronLevel(), is(2));
+		assertThat(neuron.get(1).getActive(), is(false));
+		assertThat(format.format(neuron.get(1).getCreateDate().getTime()), is("2016-04-01 00:00:00"));
+		assertThat(format.format(neuron.get(1).getUpdateDate().getTime()), is("2016-04-01 00:00:00"));
 	}
 	
 	@Test

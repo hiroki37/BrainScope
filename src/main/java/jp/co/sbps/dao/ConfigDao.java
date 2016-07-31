@@ -33,6 +33,6 @@ public class ConfigDao {
 	
 	// コンフィグを返す
 	public Config returnConfig() { 
-		return jdbc.query("SELECT * FROM config", new BeanPropertyRowMapper<>(Config.class)).get(0);
+		return jdbc.queryForObject("SELECT * FROM config", new BeanPropertyRowMapper<>(Config.class));
 	}
 }

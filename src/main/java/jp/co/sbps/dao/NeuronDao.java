@@ -13,30 +13,30 @@ import jp.co.sbps.entity.Neuron;
  * neuronテーブルへのアクセスをするDaoクラス
 */
 
-// ※※※このDaoでtree_diagramを呼んでいる問題アリ※※※
-
 @Component
 public class NeuronDao {
 	
 	@Autowired
 	private JdbcTemplate jdbc;
 	
-	@Autowired
-	ConfigDao configDao;
-	
-	@Autowired
-	TreeDiagramDao treeDiagramDao;
-	
 	// ニューロンを返す
 	public Neuron returnNeuron(Integer id) {
-		return jdbc.query("SELECT * FROM neuron WHERE id = ?",
-				new BeanPropertyRowMapper<>(Neuron.class), id).get(0);
+		return jdbc.queryForObject("SELECT * FROM neuron WHERE id = ?",
+				new BeanPropertyRowMapper<>(Neuron.class), id);
 	}
 	
 	// すべてのニューロンのリストを返す
 	public List<Neuron> returnNeuronList() {
 		return jdbc.query("SELECT * FROM neuron ORDER BY neuron_level ASC, create_date ASC",
 				new BeanPropertyRowMapper<>(Neuron.class));
+	}
+	
+	// 親ニューロンのidをキーに子ニューロンのリストを返す
+	public List<Neuron> returnChildren(Integer id) {
+		return jdbc.query("SELECT * FROM neuron "
+				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?) "
+				+ "AND neuron_level <= (SELECT neuron_level FROM neuron WHERE id = ?) + 1",
+				new BeanPropertyRowMapper<>(Neuron.class), id, id);
 	}
 	
 	// ニューロンの更新
@@ -103,15 +103,15 @@ public class NeuronDao {
 	
 	// 親ニューロンを返す
 	public Neuron parentNeuron(Neuron neuron) {
-		return jdbc.query("SELECT * FROM neuron "
+		return jdbc.queryForObject("SELECT * FROM neuron "
 				+ "WHERE id IN (SELECT ancestor FROM tree_diagram WHERE descendant = ?) "
 				+ "AND neuron_level = (?-1)",
-				new BeanPropertyRowMapper<>(Neuron.class), neuron.getId(), neuron.getNeuronLevel()).get(0);
+				new BeanPropertyRowMapper<>(Neuron.class), neuron.getId(), neuron.getNeuronLevel());
 	}
 	
 	// 最も若いニューロンを返す
 	public Neuron youngestNeuron() {
-		return jdbc.query("SELECT * FROM neuron WHERE id = (SELECT MAX(id) FROM neuron)", new BeanPropertyRowMapper<>(Neuron.class)).get(0);
+		return jdbc.queryForObject("SELECT * FROM neuron WHERE id = (SELECT MAX(id) FROM neuron)", new BeanPropertyRowMapper<>(Neuron.class));
 	}
 	
 	// 指定のニューロンがあることを確認する
