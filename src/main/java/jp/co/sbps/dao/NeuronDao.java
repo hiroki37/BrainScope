@@ -35,7 +35,8 @@ public class NeuronDao {
 	public List<Neuron> returnChildren(Integer id) {
 		return jdbc.query("SELECT * FROM neuron "
 				+ "WHERE id IN (SELECT descendant FROM tree_diagram WHERE ancestor = ?) "
-				+ "AND neuron_level <= (SELECT neuron_level FROM neuron WHERE id = ?) + 1",
+				+ "AND neuron_level <= (SELECT neuron_level FROM neuron WHERE id = ?) + 1 "
+				+ "ORDER BY neuron_level ASC, create_date ASC",
 				new BeanPropertyRowMapper<>(Neuron.class), id, id);
 	}
 	
